@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Bank_project.Models.acctypes>
+
+@{
+    ViewBag.Title = "Account Types";
+}
+
+<h2>Account Types</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.account_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.min_limit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isactive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.account_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.min_limit)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isactive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Editacctyp", new { id=item.acc_type_id }) |
+            @*@Html.ActionLink("Details", "Details", new { id=item.acc_type_id }) |*@
+            @Html.ActionLink("Delete", "Deleteactyp", new { id=item.acc_type_id })
+        </td>
+    </tr>
+}
+
+</table>

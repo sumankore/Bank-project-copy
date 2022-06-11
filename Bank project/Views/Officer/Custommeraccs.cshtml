@@ -1,0 +1,133 @@
+﻿@model IEnumerable<Bank_project.Models.Registration>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.accountnumber)
+        </th>
+        <th>
+            @Html.ActionLink("First Name", "Custommeraccs", new { Sorting_Order = ViewBag.SortingName })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.DOB)*@
+            @Html.ActionLink("DOB", "Custommeraccs", new { Sorting_Order = ViewBag.SortingDate })
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.acctype)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.acctypename)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.roleid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.role)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.mobile)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.aadhar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bank_balance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountCreationDate)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.Transactionamount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tr_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transaction_Date)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.isActive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.ToList()) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.accountnumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DOB)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Gender)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.acctype)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.acctypename)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.roleid)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.role)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.mobile)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.aadhar)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.bank_balance)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.AccountCreationDate)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.Transactionamount)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tr_type)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Transaction_Date)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.isActive)
+        </td>
+        <td>
+            @*@Html.ActionLink("Edit", "Edit", new { id = item.customerid }) |
+        @Html.ActionLink("Details", "Details", new { id = item.customerid }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.customerid })*@
+            @*@Html.ActionLink("Edit", "Edit", new { id = item.userid }) |
+            @Html.ActionLink("Details", "Details", new { id = item.userid }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.userid })*@
+
+            @Html.ActionLink("Edit", "Editcustacc", new { id = item.userid }) |
+            @Html.ActionLink("Details", "Details", new { id = item.userid }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.userid }) |
+            @Html.ActionLink("Transact", "customerbankdetails", new { id = item.accountnumber })
+        </td>
+    </tr>
+}
+
+</table>
+@Html.ActionLink("Back","Index","Officer")

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Bank_project.Models.roles>
+
+@{
+    ViewBag.Title = "roleslist";
+}
+
+<h2>roleslist</h2>
+
+<p>
+    @Html.ActionLink("Create New", "rolecreate")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.rolename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.isactive)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.rolename)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.isactive)
+        </td>
+        <td>
+            @Html.ActionLink("Edit","editrole", new { id=item.roleid }) |
+            @*@Html.ActionLink("Details", "Details", new { id=item.roleid }) |*@
+            @Html.ActionLink("Delete", "Deleterole", new { id=item.roleid })
+        </td>
+    </tr>
+}
+
+</table>

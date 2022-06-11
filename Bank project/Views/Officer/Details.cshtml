@@ -1,0 +1,77 @@
+﻿@*@model Bank_project.Models.Registration*@
+@model IEnumerable<Bank_project.Models.Registration>
+
+@{ ViewBag.Title = "Details"; }
+
+<h2>Details</h2>
+@*<dd>
+        @Html.DisplayFor(model => model.Name)
+    </dd>
+    <dt>
+        @Html.DisplayNameFor(model => model.Email)
+    </dt>
+    <dd>*@
+<table class="table">
+
+
+    @foreach (var items in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayNameFor(model => model.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(model => items.Name)
+    </td>
+</tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.DOB)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => items.DOB)
+                    </td>
+                </tr>
+
+                                <tr>
+                                    <td>
+                                        @Html.DisplayNameFor(model => model.Gender)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(model => items.Gender)
+                                    </td>
+                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        @Html.DisplayNameFor(model => model.aadhar)
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(model => items.aadhar)
+                                                    </td>
+                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        @Html.DisplayNameFor(model => model.accountnumber)
+                                                                    </td>
+                                                                    <td>
+                                                                        @Html.DisplayFor(model => items.accountnumber)
+                                                                    </td>
+                                                                </tr>
+                                                                                <tr>
+                                                                                    <td>
+                                                                                        @Html.DisplayNameFor(model => model.acctypename)
+                                                                                    </td>
+                                                                                    <td>
+                                                                                        @Html.DisplayFor(model => items.acctypename)
+                                                                                    </td>
+                                                                                </tr>
+                                                                                                <td>
+                                                                                                    @Html.DisplayNameFor(model => model.bank_balance)
+                                                                                                </td>
+                                                                                                                <td>
+                                                                                                                    @Html.DisplayFor(model => items.bank_balance)
+                                                                                                                </td>}
+</table>
+
+
+

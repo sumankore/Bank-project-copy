@@ -1,0 +1,23 @@
+﻿@*@model Bank_project.Models.Registration*@
+@model IEnumerable<Bank_project.Models.Registration>
+
+
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+@*<style>
+        body {
+            background-image: url('img_girl.jpg');
+        }
+    </style>*@
+Welcome @ViewBag.Email
+<div>
+    @Html.ActionLink("Accounts List", "Accountlist");
+    @Html.ActionLink("Customer Accounts", "Custommeraccs");
+    @Html.ActionLink("Create new account", "accreate")
+    @Html.ActionLink("Accounts Lists", "acclist");
+
+</div>
