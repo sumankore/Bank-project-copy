@@ -326,7 +326,7 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IEnumerable<Registration> modelname = (IEnumerable<Registration>)businesobj.registration.Find(id);
+            IEnumerable<Registration> modelname = businesobj.registration.Where(x=>x.userid==id);
             //var custdetails = businesobj.registration.Find(id);
             if (modelname == null)
             {
@@ -335,25 +335,36 @@ namespace Bank_project.Controllers
             return View(modelname);
 
         }
+        string acnum;
+        string actype, email;
+        float bankbal;
+
         public ActionResult Editcustacc(int id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var ids = businesobj.registration.Find(id);
+            IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
             if (ids == null)
             {
                 return HttpNotFound();
             }
+            foreach (var iems in ids)
+            {
+                acnum = iems.accountnumber;
+                 actype = iems.acctype;
+                email = iems.Email;
+
+                    }
 
             var acctyplist = businesobj.actypcrt.ToList();
-            ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", ids.acctype);
-            ViewBag.accountnumber = ids.accountnumber;
-            var acctype = businesobj.actypcrt.Find(ids.acctype);
+            ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", actype);
+            ViewBag.accountnumber = acnum;
+            var acctype = businesobj.actypcrt.Find(actype);
 
             ViewBag.Accounttype = acctype.account_type;
-            ViewBag.Email = ids.Email;
+            ViewBag.Email = email;
             //ViewBag.
             return View(ids);
         }
@@ -384,7 +395,9 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var ids = businesobj.registration.Find(id);
+            IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
+
+            //var ids = businesobj.registration.Find(id);
             if (ids == null)
             {
                 return HttpNotFound();
@@ -413,14 +426,19 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //var bankbalstbl = businesobj.Transaction.Find(id);
-            var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).FirstOrDefault();
-            //var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x=>x.Transaction_Date).FirstOrDefault();
+            IEnumerable<Transactions>bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x=>x.TransactionID);
 
-            ViewBag.accountid = bankbalstbl.accountnumber;
-            ViewBag.bankbalance = bankbalstbl.bank_balance;
-            ViewBag.acctypename = bankbalstbl.acctypename;
-            ViewBag.transactionid = bankbalstbl.TransactionID;
+            //var bankbalstbl = businesobj.Transaction.Find(id);
+            //var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).FirstOrDefault();
+            //var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x=>x.Transaction_Date).FirstOrDefault();
+            foreach (var items in bankbalstbl)
+            { //                acnum = items.accountnumber;
+              //    bankbal=items.bankb
+                ViewBag.accountid = items.accountnumber;
+                ViewBag.bankbalance = items.bank_balance;
+                ViewBag.acctypename = items.acctypename;
+                ViewBag.transactionid = items.TransactionID;
+            }
 
             if (bankbalstbl == null)
             {

@@ -1,4 +1,4 @@
-﻿@model Bank_project.Models.Transactions
+﻿@*@model Bank_project.Models.Transactions*@
 
 @model  IEnumerable<Bank_project.Models.Transactions>
 
@@ -12,80 +12,83 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+        { 
 
+    foreach (var item in Model)
+    {
     <div class="form-horizontal">
         @*<h4>bankbal</h4>*@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.TransactionID)
+        @Html.HiddenFor(model => item.TransactionID)
         @*@ViewBag.transactionid*@
         @{TempData["trid"] = ViewBag.transactionid;}
 
         <div class="form-group">
-            @Html.LabelFor(model => model.accountnumber, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => item.accountnumber, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.accountnumber, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.EditorFor(model => item.accountnumber, new { htmlAttributes = new { @class = "form-control" } })*@
                 @ViewBag.accountid
                 @{TempData["accountid"] = ViewBag.accountid;}
-                @Html.ValidationMessageFor(model => model.accountnumber, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => item.accountnumber, "", new { @class = "text-danger" })
             </div>
         </div>
 
         @*<div class="form-group">
-                @Html.LabelFor(model => model.userid, "userid", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => item.userid, "userid", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("userid", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.userid, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => item.userid, "", new { @class = "text-danger" })
                 </div>
             </div>*@
 
         <div class="form-group">
-            @Html.LabelFor(model => model.bank_balance, "Current Account Balance", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => item.bank_balance, "Current Account Balance", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.bank_balance, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.EditorFor(model => item.bank_balance, new { htmlAttributes = new { @class = "form-control" } })*@
                 @ViewBag.bankbalance
                 @{TempData["bankblc"] = ViewBag.bankbalance;}
-                @Html.ValidationMessageFor(model => model.bank_balance, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => item.bank_balance, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.acctypename, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => item.acctypename, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @*@Html.EditorFor(model => model.acctypename, new { htmlAttributes = new { @class = "form-control" } })*@
+                @*@Html.EditorFor(model => item.acctypename, new { htmlAttributes = new { @class = "form-control" } })*@
                 @ViewBag.acctypename
                 @{TempData["acctypname"] = ViewBag.acctypename;}
-                @Html.ValidationMessageFor(model => model.acctypename, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => item.acctypename, "", new { @class = "text-danger" })
             </div>
         </div>
 
 
 
         @*<div class="form-group">
-                @Html.LabelFor(model => model.isactive, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => item.isactive, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     <div class="checkbox">
-                        @Html.EditorFor(model => model.isactive)
-                        @Html.ValidationMessageFor(model => model.isactive, "", new { @class = "text-danger" })
+                        @Html.EditorFor(model => item.isactive)
+                        @Html.ValidationMessageFor(model => item.isactive, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>*@
 
         <div class="transaction-type">
             <div class="form-group">
-                @Html.LabelFor(model => model.tr_type, "Transaction Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => item.tr_type, "Transaction Type", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @*@Html.EditorFor(model => model.tr_type, new { htmlAttributes = new { @class = "form-control" } })*@
+                    @*@Html.EditorFor(model => item.tr_type, new { htmlAttributes = new { @class = "form-control" } })*@
                     Deposit
-                    @Html.RadioButtonFor(model => model.tr_type, "Deposit")
+                    @Html.RadioButtonFor(model => item.tr_type, "Deposit")
                     Withdraw
-                    @Html.RadioButtonFor(model => model.tr_type, "Withdraw")
+                    @Html.RadioButtonFor(model => item.tr_type, "Withdraw")
                     @*<div>
                             <label>@Html.RadioButton("Transaction-Type", true) Deposit</label>
                         </div>
                         <div>
                             <label>@Html.RadioButton("Transaction-Type", false) Withdraw</label>
                         </div>*@
-                    @Html.ValidationMessageFor(model => model.tr_type, "", new { @class = "text-danger" })
+                    @Html.ValidationMessageFor(model => item.tr_type, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
@@ -93,12 +96,12 @@
         <div class="form-group">
             <div class="transaction1">
                 <div class="form-group ">
-                    @Html.LabelFor(model => model.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => item.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @*@Html.EditorFor(model => model.tr_type, new { htmlAttributes = new { @class = "box" } })*@
-                        @*@Html.TextBox(-->"WEIGHT", <!--model.Transactionamount =="" ? "0" : Model.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
-                        @Html.TextBoxFor(model => model.Transactionamount, new { @Value = "" })
-                        @Html.ValidationMessageFor(model => model.tr_type)
+                        @*@Html.EditorFor(model => item.tr_type, new { htmlAttributes = new { @class = "box" } })*@
+                        @*@Html.TextBox(-->"WEIGHT", <!--item.Transactionamount =="" ? "0" : item.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
+                        @Html.TextBoxFor(model => item.Transactionamount, new { @Value = "" })
+                        @Html.ValidationMessageFor(model => item.tr_type)
                     </div>
                 </div>
             </div>
@@ -106,12 +109,12 @@
         <!--<div class="form-group">
             <div class="transaction2">
                 <div class="form-group ">
-                    @Html.LabelFor(model => model.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => item.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
                     <div class="col-md-10">-->
-        @*@Html.EditorFor(model => model.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
-        <!--@Html.TextBoxFor(model => model.Transactionamount, new { @Value = "" })
+        @*@Html.EditorFor(model => item.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
+        <!--@Html.TextBoxFor(model => item.Transactionamount, new { @Value = "" })
 
-                        @Html.ValidationMessageFor(model => model.Transactionamount)
+                        @Html.ValidationMessageFor(model => item.Transactionamount)
                     </div>
                 </div>
             </div>
@@ -123,48 +126,12 @@
             </div>
         </div>
     </div>
-    <div class="form-group">
-        @Html.ActionLink("Transaction History","Transactionhistory")
-    </div>
-    @section Scriptfortrtype
-        {
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-        <script type="text/javascript">
-            @* $(document).ready(function () {
-                $('#radio_button').click(function () {
-                    if ($("input[name='name']:checked").val() == false)
-                        $('.transaction1').hide();
-                });
-
-            });*@
-            //to test whether jquery is executing or not
-            //window.onload = function () {
-            //    if (window.jQuery) {
-            //        // jQuery is loaded
-            //        alert("Yeah!");
-            //    } else {
-            //        // jQuery is not loaded
-            //        alert("Doesn't Work");
-            //    }
-            //}
-
-
-            $(document).ready(function () {
-                var address = $('.transaction1');
-            // handle the change event of all radio button inside elements with class="delivery"
-                $('.transaction-type input[type="radio"]').change(function () {
-                    if ($(this).val() === 'true') {
-                        address.hide();
-                    }
-                    else {
-                        address.show();
-                    }
-                }
-            });
-        </script>
     }
-}
-
+                        }
+                    }
 <div>
+   
+        @Html.ActionLink("Transaction History", "Transactionhistory")
+   
     @Html.ActionLink("Back to List", "Index")
 </div>
