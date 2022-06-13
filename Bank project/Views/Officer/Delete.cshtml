@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Bank_project.Models.Registration>
-
+﻿@model  Bank_project.Models.resultviewmodel
 @{
     ViewBag.Title = "Delete";
 }
@@ -14,7 +13,7 @@
 
     <hr />
     <dl class="dl-horizontal">
-       @foreach (var item in Model)
+       @foreach (var item in Model.Registerview)
        {
         <dt>
             @*@Html.DisplayNameFor(model => model.Name)*@Name
@@ -41,7 +40,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Gender)
+            @*@Html.DisplayNameFor(model => model.Gender)*@ Gender
         </dt>
 
         <dd>
@@ -49,7 +48,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.isActive)
+            @*@Html.DisplayNameFor(model => model.isActive)*@ Isactive
         </dt>
 
         <dd>

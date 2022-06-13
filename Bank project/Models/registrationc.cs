@@ -35,6 +35,7 @@ namespace Bank_project.Models
         public string role { get; set; }
         // public string accountnumber { get; set; }
         public string mobile { get; set; }
+        public DateTime? AccountCreationDate { get; set; }
 
         public string aadhar { get; set; }
 
@@ -49,5 +50,13 @@ namespace Bank_project.Models
         public DateTime Transaction_Date { get; set; }
 
         public bool isActive { get; set; }
+        public int TransactionID { get; set; }
+       
+        public float previous_balance { get; set; }
+      
+
+        // public  Registration bankbal { get; set; }
+        public bankbal bankbal { get; set; }
+
     }
 }

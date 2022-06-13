@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Bank_project.Models.Registration>
-
+﻿@*@model IEnumerable<Bank_project.Models.Registration>*@
+@model Bank_project.Models.resultviewmodel
 @{ ViewBag.Title = "Editcustacc"; }
 
 
@@ -7,8 +7,8 @@
 {
 @Html.AntiForgeryToken() {
 
-foreach (var items in Model)
-{
+        foreach (var items in Model.Registerview)
+        {
 <div class="form-horizontal">
     <h4>Edit Customer Details</h4>
     <hr />
@@ -73,7 +73,7 @@ foreach (var items in Model)
             </div>
         </div>*@
     <div class="form-group">
-        @Html.LabelFor(model => items.acctype, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => items.acctype,"Account Type", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @ViewBag.Accounttype
             @{TempData["accountype"] = ViewBag.Accounttype;}
