@@ -24,6 +24,10 @@ namespace Bank_project.Models
         public DbSet<roles> role { get; set; }
         public DbSet<logindetails> logindetails { get; set; }
         public DbSet<registrationc> registrationc { get; set; }
+
+        public System.Data.Entity.DbSet<Bank_project.Models.resultviewmodel> resultviewmodels { get; set; }
+        //public DbSet<resultviewmodel> resultviewmodel { get; set; }
+
         //public Registration Reg { get; set; }
         //public registrationc Regc { get; set; }
 

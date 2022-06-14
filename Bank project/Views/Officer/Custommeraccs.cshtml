@@ -1,31 +1,31 @@
-﻿@model IEnumerable<Bank_project.Models.Registration>
-
+﻿@*@model IEnumerable<Bank_project.Models.Registration>*@
+@model Bank_project.Models.resultviewmodel
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.accountnumber)
+            @*@Html.DisplayNameFor(model => model.accountnumber)*@ Account Number
         </th>
         <th>
             @Html.ActionLink("First Name", "Custommeraccs", new { Sorting_Order = ViewBag.SortingName })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Email)
+            @*@Html.DisplayNameFor(model => model.Email)*@ Email
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.DOB)*@
             @Html.ActionLink("DOB", "Custommeraccs", new { Sorting_Order = ViewBag.SortingDate })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Gender)
+            @*@Html.DisplayNameFor(model => model.Gender)*@ Gender
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.acctype)
         </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.acctypename)
+            @*@Html.DisplayNameFor(model => model.acctypename)*@ Account Type
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.roleid)
@@ -34,16 +34,16 @@
             @Html.DisplayNameFor(model => model.role)
         </th>*@
         <th>
-            @Html.DisplayNameFor(model => model.mobile)
+            @*@Html.DisplayNameFor(model => model.mobile)*@ Mobile
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.aadhar)
+            @*@Html.DisplayNameFor(model => model.aadhar)*@ Aadhar
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.bank_balance)
+            @*@Html.DisplayNameFor(model => model.bank_balance)*@ Bank Balance
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.AccountCreationDate)
+            @*@Html.DisplayNameFor(model => model.AccountCreationDate)*@ Account Creation Date
         </th>
         @*<th>
             @Html.DisplayNameFor(model => model.Transactionamount)
@@ -54,13 +54,13 @@
         <th>
             @Html.DisplayNameFor(model => model.Transaction_Date)
         </th>*@
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.isActive)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
-@foreach (var item in Model.ToList()) {
+@foreach (var item in Model.Registerview) {
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.accountnumber)
@@ -110,9 +110,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.Transaction_Date)
         </td>*@
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.isActive)
-        </td>
+        </td>*@
         <td>
             @*@Html.ActionLink("Edit", "Edit", new { id = item.customerid }) |
         @Html.ActionLink("Details", "Details", new { id = item.customerid }) |
@@ -124,7 +124,7 @@
             @Html.ActionLink("Edit", "Editcustacc", new { id = item.userid }) |
             @Html.ActionLink("Details", "Details", new { id = item.userid }) |
             @Html.ActionLink("Delete", "Delete", new { id = item.userid }) |
-            @Html.ActionLink("Transact", "customerbankdetails", new { id = item.accountnumber })
+            @Html.ActionLink("Tranasactions", "transactions", new { id = item.accountnumber })
         </td>
     </tr>
 }

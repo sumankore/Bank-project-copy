@@ -1,7 +1,5 @@
-﻿@*@model Bank_project.Models.Registration*@
-@model IEnumerable<Bank_project.Models.Registration>
-
-
+﻿
+@model Bank_project.Models.resultviewmodel
 @{ ViewBag.Title = "Details"; }
 
 <h2>Details</h2>
@@ -15,11 +13,11 @@
 <table class="table">
 
 
-    @foreach (var items in Model)
+    @foreach (var items in Model.Registerview)
     {
 <tr>
     <td>
-        @Html.DisplayNameFor(model => model.Name)
+        @*@Html.DisplayNameFor(model => model.Name)*@ Name
     </td>
     <td>
         @Html.DisplayFor(model => items.Name)
@@ -27,7 +25,7 @@
 </tr>
                 <tr>
                     <td>
-                        @Html.DisplayNameFor(model => model.DOB)
+                        @*@Html.DisplayNameFor(model => model.DOB)*@ Date of Birth
                     </td>
                     <td>
                         @Html.DisplayFor(model => items.DOB)
@@ -36,7 +34,7 @@
 
                                 <tr>
                                     <td>
-                                        @Html.DisplayNameFor(model => model.Gender)
+                                        @*@Html.DisplayNameFor(model => model.Gender)*@ Gender
                                     </td>
                                     <td>
                                         @Html.DisplayFor(model => items.Gender)
@@ -44,7 +42,7 @@
                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        @Html.DisplayNameFor(model => model.aadhar)
+                                                        @*@Html.DisplayNameFor(model => model.aadhar)*@ Aadhar
                                                     </td>
                                                     <td>
                                                         @Html.DisplayFor(model => items.aadhar)
@@ -52,7 +50,7 @@
                                                 </tr>
                                                                 <tr>
                                                                     <td>
-                                                                        @Html.DisplayNameFor(model => model.accountnumber)
+                                                                        @*@Html.DisplayNameFor(model => model.accountnumber)*@ Account Number
                                                                     </td>
                                                                     <td>
                                                                         @Html.DisplayFor(model => items.accountnumber)
@@ -60,14 +58,14 @@
                                                                 </tr>
                                                                                 <tr>
                                                                                     <td>
-                                                                                        @Html.DisplayNameFor(model => model.acctypename)
+                                                                                        @*@Html.DisplayNameFor(model => model.acctypename)*@ Account Type
                                                                                     </td>
                                                                                     <td>
                                                                                         @Html.DisplayFor(model => items.acctypename)
                                                                                     </td>
                                                                                 </tr>
                                                                                                 <td>
-                                                                                                    @Html.DisplayNameFor(model => model.bank_balance)
+                                                                                                    @*@Html.DisplayNameFor(model => model.bank_balance)*@
                                                                                                 </td>
                                                                                                                 <td>
                                                                                                                     @Html.DisplayFor(model => items.bank_balance)

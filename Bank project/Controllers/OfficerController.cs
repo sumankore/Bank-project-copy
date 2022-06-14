@@ -3,6 +3,7 @@ using Bank_project.security;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -15,12 +16,12 @@ namespace Bank_project.Controllers
     [CustomAuthorize("Employee")]
     public class OfficerController : Controller
     {
-       
+
 
         acccreatecontext businesobj = new acccreatecontext();
         //acctypmdl acctypobj = new acctypmdl();
         // GET: business
-        
+
         public ActionResult Index()
         {
 
@@ -34,7 +35,7 @@ namespace Bank_project.Controllers
         //public ActionResult acclist()
         //{
         //    IEnumerable<Registration> acclist;
-           
+
         //    using (acccreatecontext context = new acccreatecontext())
         //    {
         //        acclist = context.registration.Where(x => x.role == "Customer").ToList();
@@ -55,26 +56,31 @@ namespace Bank_project.Controllers
         {
             ViewBag.SortingName = String.IsNullOrEmpty(Sorting_Order) ? "Name_Description" : "";
             ViewBag.SortingDate = Sorting_Order == "Date_Enroll" ? "Date_Description" : "Date";
-            var customers = /*from stu in  select stu;*/businesobj.registration.Where(x => x.role == "Customer"/*&x.isActive==true*/);
-            switch (Sorting_Order)
-            {
-                case "Name_Description":
-                    customers = customers.OrderByDescending(x => x.Name);
-                    break;
-                case "Date":
-                    customers = customers.OrderByDescending(x => x.DOB);
-                    break;
+            //var customers = businesobj.registration.Where(x => x.role == "Customer"&x.isActive==true);
+            resultviewmodel mymodel = new resultviewmodel();
+            //mymodel.Transactionsview = GetTransactions();
+            var accounts = Getaccounts();
+            mymodel.Registerview = accounts.Where(x => x.role == "Customer" & x.isActive == true);
+            return View(mymodel);
+            //switch (Sorting_Order)
+            //{
+            //    case "Name_Description":
+            //        customers = customers.OrderByDescending(x => x.Name);
+            //        break;
+            //    case "Date":
+            //        customers = customers.OrderByDescending(x => x.DOB);
+            //        break;
 
-                case "Date_Enroll":
-                   
-                    customers = customers.OrderBy(x => x.AccountCreationDate);
-                   
-                    break;
-                default:
-                    customers = customers.OrderBy(x => x.accountnumber);
-                    break;
-            }
-            return View(customers/*.ToList()*/);
+            //    case "Date_Enroll":
+
+            //        customers = customers.OrderBy(x => x.AccountCreationDate);
+
+            //        break;
+            //    default:
+            //        customers = customers.OrderBy(x => x.accountnumber);
+            //        break;
+            //}
+            //return View(customers/*.ToList()*/);
         }
 
         public ActionResult accreate()
@@ -282,6 +288,7 @@ namespace Bank_project.Controllers
                     };
                     businesobj.Transaction.Add(transactions);
                     businesobj.SaveChanges();
+
                     return View("Index");
 
                 }
@@ -326,13 +333,17 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IEnumerable<Registration> modelname = businesobj.registration.Where(x=>x.userid==id);
-            //var custdetails = businesobj.registration.Find(id);
-            if (modelname == null)
+            //IEnumerable<Registration> custdetails = businesobj.registration.Where(x => x.userid == id);
+
+            resultviewmodel mymodel = new resultviewmodel();
+            var accounts = Getaccounts();
+            mymodel.Registerview = Getaccounts().Where(x => x.userid == id);
+
+            if (mymodel.Registerview == null)
             {
                 return HttpNotFound();
             }
-            return View(modelname);
+            return View(mymodel);
 
         }
         string acnum;
@@ -345,20 +356,25 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
+            //IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
+            resultviewmodel ids = new resultviewmodel();
+            //var accounts = Getaccounts();
+           ids.Registerview = Getaccounts().Where(x => x.userid == id);
             if (ids == null)
             {
                 return HttpNotFound();
             }
-            foreach (var iems in ids)
-            {
-                acnum = iems.accountnumber;
-                 actype = iems.acctype;
-                email = iems.Email;
+           
 
-                    }
+                foreach (var iems in ids.Registerview)
+                {
+                    acnum = iems.accountnumber;
+                    actype = iems.acctype;
+                    email = iems.Email;
 
-            var acctyplist = businesobj.actypcrt.ToList();
+                }
+
+                var acctyplist = businesobj.actypcrt.ToList();
             ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", actype);
             ViewBag.accountnumber = acnum;
             var acctype = businesobj.actypcrt.Find(actype);
@@ -395,8 +411,10 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
-
+            //IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
+            //var accounts = Getaccounts();
+            resultviewmodel ids = new resultviewmodel();
+            ids.Registerview = Getaccounts().Where(x => x.userid == id);
             //var ids = businesobj.registration.Find(id);
             if (ids == null)
             {
@@ -419,34 +437,67 @@ namespace Bank_project.Controllers
             return RedirectToAction("Index");
 
         }
-        public ActionResult customerbankdetails(int id)
+        private static List<Transactions> GetTransactions()
+        {
+            acccreatecontext db = new acccreatecontext();
+
+            var transactionss = db.Transaction.ToList();
+            return transactionss;
+        }
+
+        private static List<Registration> Getaccounts()
+        {
+            acccreatecontext db = new acccreatecontext();
+
+            var accounts = db.registration.ToList();
+            return accounts;
+        }
+        public ActionResult transactions(int id)
         {
             string accnumber = Convert.ToString(id);
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            IEnumerable<Transactions>bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x=>x.TransactionID);
+            resultviewmodel mymodel = new resultviewmodel();
 
+            mymodel.Transactionsview = GetTransactions().Where(x => x.accountnumber == id.ToString());
+
+            //mymodel.Registerview = Getaccounts();
+            return View(mymodel);
+            //return View(new acccreatecontext());
+            //dynamic model = new ExpandoObject();
+            //model.transactions = GetTransactions();
+            //return View(model);
+
+            /* IEnumerable<resultviewmodel>*/
+            //var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x => x.TransactionID);
+            //var bankbalstbl = new resultviewmodel
+            //{
+            //    Transactionsview = Transactions,
+
+            //};
+            //resultviewmodel rsmodel = new resultviewmodel();
+            //rsmodel.Transactionsview=Transactions.
             //var bankbalstbl = businesobj.Transaction.Find(id);
-            //var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).FirstOrDefault();
-            //var bankbalstbl = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x=>x.Transaction_Date).FirstOrDefault();
-            foreach (var items in bankbalstbl)
-            { //                acnum = items.accountnumber;
-              //    bankbal=items.bankb
-                ViewBag.accountid = items.accountnumber;
-                ViewBag.bankbalance = items.bank_balance;
-                ViewBag.acctypename = items.acctypename;
-                ViewBag.transactionid = items.TransactionID;
-            }
 
-            if (bankbalstbl == null)
-            {
-                return HttpNotFound();
-            }
+            //foreach (var items in bankbalstbl)
+            //{ //                acnum = items.accountnumber;
+            //  //    bankbal=items.bankb
+            //    ViewBag.accountid = items.accountnumber;
+            //    ViewBag.bankbalance = items.bank_balance;
+            //    ViewBag.acctypename = items.acctypename;
+            //    ViewBag.transactionid = items.TransactionID;
+            //}
+            //return View(bankbalstbl);
+
+            //if (bankbalstbl == null)
+            //{
+            //    return HttpNotFound();
+            //}
 
 
-            return View(bankbalstbl);
+            //return View(bankbalstbl);
             // var bankbals = businesobj.bankbal.Find(id);
             // var bankbal = bankbals.bank_balance;
             //bankbals.userid

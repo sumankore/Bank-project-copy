@@ -142,6 +142,7 @@
     <Compile Include="Models\bankbal.cs" />
     <Compile Include="Models\acctypes.cs" />
     <Compile Include="Models\registrationc.cs" />
+    <Compile Include="Models\resultviewmodel.cs" />
     <Compile Include="Models\roles.cs" />
     <Compile Include="Models\Transactions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -491,6 +492,7 @@
     <Content Include="Views\admin\UnAuthorized.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Officer\Custommeraccs.cshtml" />
+    <Content Include="Views\Officer\transactions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

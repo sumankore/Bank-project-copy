@@ -1,7 +1,5 @@
-﻿@*@model Bank_project.Models.Transactions*@
-
-@model  IEnumerable<Bank_project.Models.Transactions>
-
+﻿
+@model Bank_project.Models.resultviewmodel
 
 @{
     ViewBag.Title = "customerbankdetails";
@@ -12,126 +10,126 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-        { 
-
-    foreach (var item in Model)
     {
-    <div class="form-horizontal">
-        @*<h4>bankbal</h4>*@
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => item.TransactionID)
-        @*@ViewBag.transactionid*@
-        @{TempData["trid"] = ViewBag.transactionid;}
 
-        <div class="form-group">
-            @Html.LabelFor(model => item.accountnumber, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*@Html.EditorFor(model => item.accountnumber, new { htmlAttributes = new { @class = "form-control" } })*@
-                @ViewBag.accountid
-                @{TempData["accountid"] = ViewBag.accountid;}
-                @Html.ValidationMessageFor(model => item.accountnumber, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        foreach (var item in Model.Transactionsview)
+        { 
+            <div class="form-horizontal">
+                @*<h4>bankbal</h4>*@
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @Html.HiddenFor(model => model.Transactionsview)
+                @*@ViewBag.transactionid*@
+                @{TempData["trid"] = ViewBag.transactionid;}
 
-        @*<div class="form-group">
-                @Html.LabelFor(model => item.userid, "userid", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("userid", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => item.userid, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-
-        <div class="form-group">
-            @Html.LabelFor(model => item.bank_balance, "Current Account Balance", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*@Html.EditorFor(model => item.bank_balance, new { htmlAttributes = new { @class = "form-control" } })*@
-                @ViewBag.bankbalance
-                @{TempData["bankblc"] = ViewBag.bankbalance;}
-                @Html.ValidationMessageFor(model => item.bank_balance, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => item.acctypename, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @*@Html.EditorFor(model => item.acctypename, new { htmlAttributes = new { @class = "form-control" } })*@
-                @ViewBag.acctypename
-                @{TempData["acctypname"] = ViewBag.acctypename;}
-                @Html.ValidationMessageFor(model => item.acctypename, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => item.isactive, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    <div class="checkbox">
-                        @Html.EditorFor(model => item.isactive)
-                        @Html.ValidationMessageFor(model => item.isactive, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>*@
-
-        <div class="transaction-type">
-            <div class="form-group">
-                @Html.LabelFor(model => item.tr_type, "Transaction Type", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @*@Html.EditorFor(model => item.tr_type, new { htmlAttributes = new { @class = "form-control" } })*@
-                    Deposit
-                    @Html.RadioButtonFor(model => item.tr_type, "Deposit")
-                    Withdraw
-                    @Html.RadioButtonFor(model => item.tr_type, "Withdraw")
-                    @*<div>
-                            <label>@Html.RadioButton("Transaction-Type", true) Deposit</label>
-                        </div>
-                        <div>
-                            <label>@Html.RadioButton("Transaction-Type", false) Withdraw</label>
-                        </div>*@
-                    @Html.ValidationMessageFor(model => item.tr_type, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="transaction1">
-                <div class="form-group ">
-                    @Html.LabelFor(model => item.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
+                <div class="form-group">
+                    @Html.LabelFor(model => item.accountnumber, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @*@Html.EditorFor(model => item.tr_type, new { htmlAttributes = new { @class = "box" } })*@
-                        @*@Html.TextBox(-->"WEIGHT", <!--item.Transactionamount =="" ? "0" : item.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
-                        @Html.TextBoxFor(model => item.Transactionamount, new { @Value = "" })
-                        @Html.ValidationMessageFor(model => item.tr_type)
+                        @*@Html.EditorFor(model => item.accountnumber, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @ViewBag.accountid
+                        @{TempData["accountid"] = ViewBag.accountid;}
+                        @Html.ValidationMessageFor(model => item.accountnumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @*<div class="form-group">
+                        @Html.LabelFor(model => item.userid, "userid", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.DropDownList("userid", null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => item.userid, "", new { @class = "text-danger" })
+                        </div>
+                    </div>*@
+
+                <div class="form-group">
+                    @Html.LabelFor(model => item.bank_balance, "Current Account Balance", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => item.bank_balance, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @ViewBag.bankbalance
+                        @{TempData["bankblc"] = ViewBag.bankbalance;}
+                        @Html.ValidationMessageFor(model => item.bank_balance, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => item.acctypename, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @*@Html.EditorFor(model => item.acctypename, new { htmlAttributes = new { @class = "form-control" } })*@
+                        @ViewBag.acctypename
+                        @{TempData["acctypname"] = ViewBag.acctypename;}
+                        @Html.ValidationMessageFor(model => item.acctypename, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+                @*<div class="form-group">
+                        @Html.LabelFor(model => item.isactive, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => item.isactive)
+                                @Html.ValidationMessageFor(model => item.isactive, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div class="transaction-type">
+                    <div class="form-group">
+                        @Html.LabelFor(model => item.tr_type, "Transaction Type", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @*@Html.EditorFor(model => item.tr_type, new { htmlAttributes = new { @class = "form-control" } })*@
+                            Deposit
+                            @Html.RadioButtonFor(model => item.tr_type, "Deposit")
+                            Withdraw
+                            @Html.RadioButtonFor(model => item.tr_type, "Withdraw")
+                            @*<div>
+                                    <label>@Html.RadioButton("Transaction-Type", true) Deposit</label>
+                                </div>
+                                <div>
+                                    <label>@Html.RadioButton("Transaction-Type", false) Withdraw</label>
+                                </div>*@
+                            @Html.ValidationMessageFor(model => item.tr_type, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="transaction1">
+                        <div class="form-group ">
+                            @Html.LabelFor(model => item.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @*@Html.EditorFor(model => item.tr_type, new { htmlAttributes = new { @class = "box" } })*@
+                                @*@Html.TextBox(-->"WEIGHT", <!--item.Transactionamount =="" ? "0" : item.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
+                                @Html.TextBoxFor(model => item.Transactionamount, new { @Value = "" })
+                                @Html.ValidationMessageFor(model => item.tr_type)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="form-group">
+                    <div class="transaction2">
+                        <div class="form-group ">
+                            @Html.LabelFor(model => item.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">-->
+                @*@Html.EditorFor(model => item.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
+                <!--@Html.TextBoxFor(model => item.Transactionamount, new { @Value = "" })
+
+                                @Html.ValidationMessageFor(model => item.Transactionamount)
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-default" />
                     </div>
                 </div>
             </div>
-        </div>
-        <!--<div class="form-group">
-            <div class="transaction2">
-                <div class="form-group ">
-                    @Html.LabelFor(model => item.Transactionamount, "Transaction Amount", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">-->
-        @*@Html.EditorFor(model => item.Transactionamount, new { htmlAttributes = new { @class = "box" } })*@
-        <!--@Html.TextBoxFor(model => item.Transactionamount, new { @Value = "" })
-
-                        @Html.ValidationMessageFor(model => item.Transactionamount)
-                    </div>
-                </div>
-            </div>
-        </div>-->
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
+        }
     }
-                        }
-                    }
+}
 <div>
-   
-        @Html.ActionLink("Transaction History", "Transactionhistory")
-   
+
+    @Html.ActionLink("Transaction History", "Transactionhistory")
+
     @Html.ActionLink("Back to List", "Index")
 </div>
