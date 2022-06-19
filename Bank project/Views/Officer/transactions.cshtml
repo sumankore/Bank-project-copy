@@ -1,5 +1,4 @@
-﻿@*@model IEnumerable<Bank_project.Models.resultviewmodel>*@
-@model  Bank_project.Models.resultviewmodel
+﻿@model  Bank_project.Models.resultviewmodel
 
 @{
     ViewBag.Title = "Transactions";
@@ -7,9 +6,11 @@
 
 <h2>Transactions</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+
+
+Account Number:@ViewBag.acnum||
+              Account Type: @ViewBag.accountype||
+               @*Bank Balance :@ViewBag.bankbal*@
 <table class="table">
     <tr>
         <th>
@@ -26,8 +27,8 @@
         </th>
 
         @*<th>
-            @Html.DisplayNameFor(model => model.acctypename)
-        </th>*@
+                @Html.DisplayNameFor(model => model.acctypename)
+            </th>*@
         <th>
             @*@Html.DisplayNameFor(model => model.tr_type)*@ Transaction Type
         </th>
@@ -36,7 +37,7 @@
         </th>
     </tr>
 
-    @foreach (var item in Model.Transactionsview)
+    @foreach (var item in Model.Transactionsviewlist)
     {
         <tr>
             <td>
@@ -71,5 +72,8 @@
                 </td>*@
         </tr>
     }
+    <p>
+        @Html.ActionLink("Make a new transaction", "transfer", new { id = @ViewBag.acnum })
+    </p>
 
 </table>

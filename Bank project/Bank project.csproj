@@ -61,6 +61,12 @@
     <Reference Include="Mvc.JQuery.DataTables.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Mvc.JQuery.DataTables.Common.1.5.56\lib\net451\Mvc.JQuery.DataTables.Common.dll</HintPath>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -322,6 +328,7 @@
     <Content Include="Content\DataTables\images\sort_desc_disabled.png" />
     <Content Include="Content\DataTables\swf\flashExport.swf" />
     <Content Include="Content\jquery.dataTables.min.css" />
+    <Content Include="Content\PagedList.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -482,7 +489,7 @@
     <Content Include="Views\admin\Editempacc.cshtml" />
     <Content Include="Views\Officer\Editcustacc.cshtml" />
     <Content Include="Views\Home\LoginPage.cshtml" />
-    <Content Include="Views\Officer\customerbankdetails.cshtml" />
+    <Content Include="Views\Officer\transfer.cshtml" />
     <Content Include="Views\Home\Logout.cshtml" />
     <Content Include="Views\Officer\Details.cshtml" />
     <Content Include="Views\admin\empdetails.cshtml" />
