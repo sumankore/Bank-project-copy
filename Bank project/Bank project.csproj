@@ -500,10 +500,12 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Officer\Custommeraccs.cshtml" />
     <Content Include="Views\Officer\Transactions.cshtml" />
-    <Content Include="Views\Officer\Editcustaccs.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Edit.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Transactions.cshtml" />
-    <Content Include="Views\Officer\transfers.cshtml" />
+    <Content Include="Views\Officer\Registrationsuccess.cshtml" />
+    <Content Include="Views\Officer\userverification.cshtml" />
+    <Content Include="Views\Home\changepassword.cshtml" />
+    <Content Include="Views\Home\forgotpassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

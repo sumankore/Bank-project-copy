@@ -7,6 +7,8 @@ using System.Data.Entity;
 using System.Dynamic;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -33,29 +35,9 @@ namespace Bank_project.Controllers
         }
 
 
-        //[ChildActionOnly]
-        //public ActionResult acclist()
-        //{
-        //    IEnumerable<Registration> acclist;
-
-        //    using (acccreatecontext context = new acccreatecontext())
-        //    {
-        //        acclist = context.registration.Where(x => x.role == "Customer").ToList();
-        //    }
-        //    return PartialView("_LoginPartial", acclist);
-        //}
-        //public ActionResult Accountlist()
-        //{
-
-        //    //    var accounts = businesobj.registration.Where(x => x.isActive == true);
-        //    //var accounts = businesobj.registration.Where(x => x.role == "Customer").FirstOrDefault();
-        //    var accounts = businesobj.registration.Where(x => x.role == "Customer");
-
-
-        //    return View(accounts);
-        //}
         public ActionResult Custommeraccs(string Sorting_Order, string Search_Data, string Filter_Value, int? Page_No)
         {
+            
             ViewBag.CurrentSortOrder = Sorting_Order;
             ViewBag.SortingName = String.IsNullOrEmpty(Sorting_Order) ? "Name_Description" : "";
             ViewBag.SortingDate = Sorting_Order == "Date_Enroll" ? "Date_Description" : "Date";
@@ -70,46 +52,42 @@ namespace Bank_project.Controllers
             }
 
             ViewBag.FilterValue = Search_Data;
-            resultviewmodel customers = new resultviewmodel();
-            var accounts = Getaccounts().ToList();
-            int Size_Of_Page = 2;
-           int No_Of_Page = (Page_No ?? 1);
-            customers.Registerviewpl = accounts.Where(x => x.role == "Customer" & x.isActive == true).ToPagedList(No_Of_Page, Size_Of_Page);
-            //var customers = from accs in businesobj.registration.Where(x => x.role == "Customer" && x.isActive == true) select accs;
-            //if (!String.IsNullOrEmpty(Search_Data))
+            var customers = from accs in businesobj.registration.Where(x => x.role == "Customer" && x.isActive == true) select accs;
+            if (!String.IsNullOrEmpty(Search_Data))
 
-            //{
-            //    //customers.Registerviewpl = customers.Registerviewpl.Where(x => x.Name.ToUpper().Contains(Search_Data.ToUpper()).ToPagedList(No_Of_Page, Size_Of_Page));
-            //       /* || accs.LastName.ToUpper().Contains(Search_Data.ToUpper())*/);
-            //}
-           
-
+            {
+                customers = customers.Where(accs => accs.Name.ToUpper().Contains(Search_Data.ToUpper())
+                   /* || accs.LastName.ToUpper().Contains(Search_Data.ToUpper())*/);
+            }
+            // var customers = /*from stu in  select stu;*/businesobj.registration.Where(x => x.role == "Customer"&x.isActive==true);
             switch (Sorting_Order)
             {
                 case "Name_Description":
-                    customers.Registerviewpl = customers.Registerviewpl.OrderByDescending(x => x.Name).ToPagedList(No_Of_Page, Size_Of_Page);
+                    customers = customers.OrderByDescending(x => x.Name);
                     break;
                 case "Date":
-                    customers.Registerviewpl = customers.Registerviewpl.OrderByDescending(x => x.DOB).ToPagedList(No_Of_Page, Size_Of_Page);
+                    customers = customers.OrderByDescending(x => x.AccountCreationDate);
                     break;
 
                 case "Date_Enroll":
 
-                    customers.Registerviewpl = customers.Registerviewpl.OrderBy(x => x.AccountCreationDate).ToPagedList(No_Of_Page, Size_Of_Page);
+                    customers = customers.OrderBy(x => x.DOB);
 
                     break;
                 default:
-                    customers.Registerviewpl = customers.Registerviewpl.OrderBy(x => x.accountnumber).ToPagedList(No_Of_Page, Size_Of_Page);
+                    customers = customers.OrderBy(x => x.accountnumber);
                     break;
             }
-            //int Size_Of_Page = 4;
-            //int No_Of_Page = (Page_No ?? 1);
            
-            customers.Registerviewpl = customers.Registerviewpl.ToPagedList(No_Of_Page, Size_Of_Page);
-            return View(customers);
-           
-            //return View(customers/*.ToList()*/);
+            resultviewmodel srVM = new resultviewmodel();
+            int pageSize = 3;
+            int pageNumber = (Page_No ?? 1);
+            srVM.Registerviewpl = customers.ToList().ToPagedList(pageNumber, pageSize);
+            return View(srVM);
+
+
         }
+
 
         public ActionResult accreate()
         {
@@ -118,7 +96,7 @@ namespace Bank_project.Controllers
             ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type");
             return View();
         }
-        
+
         [HttpPost]
         public ActionResult accreate(registrationc reg)
         {
@@ -201,25 +179,13 @@ namespace Bank_project.Controllers
                     var roleids = businesobj.role.Find("2C");// role id is placed here
                     reg.roleid = roleids.roleid;
 
-                    //string passwordd = password();
-
-
-
-                    // for (int i = 0; i < emailist.Count - 1; i++)
-                    // {
-                    //     if (emailist[i].Email == reg.Email)
-                    //     {
-                    //         ViewBag.Message = "Email already exists!";
-                    //         flag = true;
-                    //         break;
-
-                    //     }
-                    // }
-
-                    //if (flag == false)
-
+                    
+                    ViewBag.Email = Session["Email"];
+                    reg.ActivationCode = Guid.NewGuid().ToString(); ;
+                    SendEmailToUser(reg.Email, reg.ActivationCode.ToString());
                     var registration = new Registration()
                     {
+                        EmailVerification = false,
                         acctype = reg.acctype,
                         Name = reg.Name,
                         DOB = reg.DOB,
@@ -229,14 +195,14 @@ namespace Bank_project.Controllers
                         mobile = reg.mobile,
                         role = reg.role,
                         roleid = reg.roleid,
+                        ActivationCode = reg.ActivationCode,
+                        accountcreatedby = ViewBag.Email,
                         bank_balance = reg.bank_balance,
                         isActive = true,
                         aadhar = reg.aadhar,
                         AccountCreationDate = DateTime.Now,
                         password = passwordd,
                         accountnumber = Convert.ToString(accountidd),
-
-
                     };
                     businesobj.registration.Add(registration);
                     businesobj.SaveChanges();
@@ -281,12 +247,74 @@ namespace Bank_project.Controllers
                     };
                     businesobj.Transaction.Add(transactions);
                     businesobj.SaveChanges();
-
-                    return View("Index");
-
+                    ViewBag.regsuccess = "Your registration is successful please check your email";
+                    return View("Registrationsuccess");
                 }
 
             }
+            return View();
+        }
+
+        public ActionResult Registrationsuccess()
+        {
+            return View();
+        }
+        public void SendEmailToUser(string emailId, string activationCode)
+        {
+            var GenarateUserVerificationLink = "admin/UserVerification/" + activationCode;
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, GenarateUserVerificationLink);
+
+            var fromMail = new MailAddress("sumankore121@gmail.com", "Bank Name"); // set your email    
+            var fromEmailpassword = "bhxavspkfpwckuae"; // Set your password     
+            var toEmail = new MailAddress(emailId);
+
+            var smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            //smtp.EnableSsl = true;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "bhxavspkfpwckuae");
+            //smtp.Credentials = new NetworkCredential(fromMail.Address, fromEmailpassword);
+            smtp.EnableSsl = true;
+            var Message = new MailMessage(fromMail, toEmail);
+            Message.Subject = "Registration Completed";
+            Message.Body = "<br/> Your registration completed succesfully." +
+                           "<br/> please click on the below link for account verification" +
+                           "<br/><br/><a href=" + link + ">" + link + "</a>";
+            Message.IsBodyHtml = true;
+            smtp.Send(Message);
+        }
+        [HttpPost]
+        public ActionResult UserVerification(string id)
+        {
+            bool Status = false;
+
+            businesobj.Configuration.ValidateOnSaveEnabled = false; // Ignor to password confirmation     
+            var IsVerify = businesobj.registration.Where(u => u.ActivationCode == new Guid(id).ToString()).FirstOrDefault();
+
+            if (IsVerify != null)
+            {
+                IsVerify.EmailVerification = true;
+                businesobj.SaveChanges();
+                ViewBag.Message = "Email Verification completed";
+                Status = true;
+                ViewBag.pass = "Please reset your password before logging in";
+            }
+            else
+            {
+                ViewBag.Message = "Invalid Request...Email not verified";
+                ViewBag.Status = false;
+            }
+
+            return View();
+        }
+
+
+
+        public ActionResult userverification()
+        {
+
             return View();
         }
 
@@ -304,7 +332,8 @@ namespace Bank_project.Controllers
             }
             //ViewBag.strongpwd = strrandom;
             TempData["pass"] = strrandom;
-            return strrandom;
+            //return strrandom;
+            return Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(strrandom)));
         }
         // int acoountiid;
         public int AutoPRNo()
@@ -349,31 +378,6 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
-            //resultviewmodel ids = new resultviewmodel();
-            //var accounts = Getaccounts();
-           //ids.Registerview = Getaccounts().Where(x => x.userid == id);
-           // if (ids == null)
-           // {
-           //     return HttpNotFound();
-           // }
-           
-
-           //     foreach (var iems in ids.Registerview)
-           //     {
-           //         acnum = iems.accountnumber;
-           //         actype = iems.acctype;
-           //         email = iems.Email;
-
-           //     }
-
-           //     var acctyplist = businesobj.actypcrt.ToList();
-           // ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", actype);
-           // ViewBag.accountnumber = acnum;
-           // var acctype = businesobj.actypcrt.Find(actype);
-
-           // ViewBag.Accounttype = acctype.account_type;
-           // ViewBag.Email = email;
 
 
             resultviewmodel mymodel = new resultviewmodel();
@@ -393,7 +397,7 @@ namespace Bank_project.Controllers
             //mymodel.Registerview = Getaccounts();
             return View(mymodel);
 
-           
+
         }
 
         [HttpPost]
@@ -474,13 +478,13 @@ namespace Bank_project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             resultviewmodel mymodel = new resultviewmodel();
-            
-            mymodel.Transactionsviewlist = GetTransactions().Where(x => x.accountnumber == id.ToString()).OrderByDescending(x=>x.TransactionID).ToList();
-            if(mymodel.Transactionsviewlist==null)
+
+            mymodel.Transactionsviewlist = GetTransactions().Where(x => x.accountnumber == id.ToString()).OrderByDescending(x => x.TransactionID).ToList();
+            if (mymodel.Transactionsviewlist == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            foreach(var items in mymodel.Transactionsviewlist)
+            foreach (var items in mymodel.Transactionsviewlist)
             {
                 ViewBag.acnum = items.accountnumber;
                 ViewBag.accountype = items.acctypename;
@@ -488,8 +492,8 @@ namespace Bank_project.Controllers
             }
             //mymodel.Registerview = Getaccounts();
             return View(mymodel);
-            
-           
+
+
             //if (bankbalstbl == null)
             //{
             //    return HttpNotFound();
@@ -515,7 +519,7 @@ namespace Bank_project.Controllers
             //mymodel.Transactionsview = GetTransactions().OrderByDescending(x=>x.TransactionID).Where(x=>x.accountnumber == id.ToString()).FirstOrDefault();
             mymodel.Transactionsviewlist = GetTransactions().Where(x => x.accountnumber == id.ToString())
                  .OrderByDescending(x => x.TransactionID).Take(1).ToList();
-                 
+
             if (mymodel.Transactionsviewlist == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
