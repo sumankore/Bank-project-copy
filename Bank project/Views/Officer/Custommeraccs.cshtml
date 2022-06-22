@@ -1,8 +1,18 @@
-﻿@*@model IEnumerable<Bank_project.Models.Registration>*@
-@model Bank_project.Models.resultviewmodel
+﻿@model Bank_project.Models.resultviewmodel
+@using PagedList;
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+@*@model IPagedList<Bank_project.Models.resultviewmodel>*@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
+@using (Html.BeginForm("custommeraccs", "Officer", FormMethod.Get))
+{
+    <p>
+        Search Name: @Html.TextBox("Search_Data", ViewBag.FilterValue as string)
+        <input type="submit" value="Find" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -10,6 +20,7 @@
         </th>
         <th>
             @Html.ActionLink("First Name", "Custommeraccs", new { Sorting_Order = ViewBag.SortingName })
+
         </th>
         <th>
             @*@Html.DisplayNameFor(model => model.Email)*@ Email
@@ -22,17 +33,17 @@
             @*@Html.DisplayNameFor(model => model.Gender)*@ Gender
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.acctype)
-        </th>*@
+                @Html.DisplayNameFor(model => model.acctype)
+            </th>*@
         <th>
             @*@Html.DisplayNameFor(model => model.acctypename)*@ Account Type
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.roleid)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.role)
-        </th>*@
+                @Html.DisplayNameFor(model => model.roleid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.role)
+            </th>*@
         <th>
             @*@Html.DisplayNameFor(model => model.mobile)*@ Mobile
         </th>
@@ -46,62 +57,63 @@
             @*@Html.DisplayNameFor(model => model.AccountCreationDate)*@ Account Creation Date
         </th>
         @*<th>
-            @Html.DisplayNameFor(model => model.Transactionamount)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.tr_type)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Transaction_Date)
-        </th>*@
+                @Html.DisplayNameFor(model => model.Transactionamount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.tr_type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Transaction_Date)
+            </th>*@
         @*<th>
-            @Html.DisplayNameFor(model => model.isActive)
-        </th>*@
+                @Html.DisplayNameFor(model => model.isActive)
+            </th>*@
         <th></th>
     </tr>
 
-@foreach (var item in Model.Registerview) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.accountnumber)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DOB)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        @*<td>
+    @foreach (var item in Model.Registerviewpl)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.accountnumber)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.DOB)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Gender)
+    </td>
+    @*<td>
             @Html.DisplayFor(modelItem => item.acctype)
         </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.acctypename)
-        </td>
-        @*<td>
+    <td>
+        @Html.DisplayFor(modelItem => item.acctypename)
+    </td>
+    @*<td>
             @Html.DisplayFor(modelItem => item.roleid)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.role)
         </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.mobile)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.aadhar)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.bank_balance)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AccountCreationDate)
-        </td>
-        @*<td>
+    <td>
+        @Html.DisplayFor(modelItem => item.mobile)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.aadhar)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.bank_balance)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.AccountCreationDate)
+    </td>
+    @*<td>
             @Html.DisplayFor(modelItem => item.Transactionamount)
         </td>
         <td>
@@ -110,24 +122,21 @@
         <td>
             @Html.DisplayFor(modelItem => item.Transaction_Date)
         </td>*@
-        @*<td>
+    @*<td>
             @Html.DisplayFor(modelItem => item.isActive)
         </td>*@
-        <td>
-            @*@Html.ActionLink("Edit", "Edit", new { id = item.customerid }) |
-        @Html.ActionLink("Details", "Details", new { id = item.customerid }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.customerid })*@
-            @*@Html.ActionLink("Edit", "Edit", new { id = item.userid }) |
-            @Html.ActionLink("Details", "Details", new { id = item.userid }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.userid })*@
+    <td>
 
-            @Html.ActionLink("Edit", "Editcustacc", new { id = item.userid }) |
-            @Html.ActionLink("Details", "Details", new { id = item.userid }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.userid }) |
-            @Html.ActionLink("Tranasactions", "transactions", new { id = item.accountnumber })
-        </td>
-    </tr>
-}
+
+        @Html.ActionLink("Edit", "Editcustacc", new { id = item.userid }) |
+        @Html.ActionLink("Details", "Details", new { id = item.userid }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.userid }) |
+        @Html.ActionLink("Tranasactions", "transactions", new { id = item.accountnumber })
+    </td>
+</tr>}
+    Page @(Model.Registerviewpl.PageCount < Model.Registerviewpl.PageNumber ? 0 : Model.Registerviewpl.PageNumber) of @Model.Registerviewpl.PageCount
+    @Html.PagedListPager(Model.Registerviewpl, Page_No => Url.Action("Index",
+                    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))
 
 </table>
-@Html.ActionLink("Back","Index","Officer")
+@Html.ActionLink("Back", "Index", "Officer")
