@@ -1,6 +1,7 @@
 ﻿using Bank_project.Models;
 using Bank_project.security;
 using PagedList;
+using Rotativa;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -37,7 +38,7 @@ namespace Bank_project.Controllers
 
         public ActionResult Custommeraccs(string Sorting_Order, string Search_Data, string Filter_Value, int? Page_No)
         {
-            
+
             ViewBag.CurrentSortOrder = Sorting_Order;
             ViewBag.SortingName = String.IsNullOrEmpty(Sorting_Order) ? "Name_Description" : "";
             ViewBag.SortingDate = Sorting_Order == "Date_Enroll" ? "Date_Description" : "Date";
@@ -78,7 +79,7 @@ namespace Bank_project.Controllers
                     customers = customers.OrderBy(x => x.accountnumber);
                     break;
             }
-           
+
             resultviewmodel srVM = new resultviewmodel();
             int pageSize = 3;
             int pageNumber = (Page_No ?? 1);
@@ -179,7 +180,7 @@ namespace Bank_project.Controllers
                     var roleids = businesobj.role.Find("2C");// role id is placed here
                     reg.roleid = roleids.roleid;
 
-                    
+
                     ViewBag.Email = Session["Email"];
                     reg.ActivationCode = Guid.NewGuid().ToString(); ;
                     SendEmailToUser(reg.Email, reg.ActivationCode.ToString());
@@ -493,19 +494,29 @@ namespace Bank_project.Controllers
             //mymodel.Registerview = Getaccounts();
             return View(mymodel);
 
-
-            //if (bankbalstbl == null)
-            //{
-            //    return HttpNotFound();
-            //}
+        }
 
 
-            //return View(bankbalstbl);
-            // var bankbals = businesobj.bankbal.Find(id);
-            // var bankbal = bankbals.bank_balance;
-            //bankbals.userid
-            // return View();
+        public ActionResult PrintPartialViewToPdf(int id)
+        {
+            resultviewmodel mymodel = new resultviewmodel();
+            mymodel.Transactionsviewlist = GetTransactions().Where(x => x.accountnumber == id.ToString()).OrderByDescending(x => x.TransactionID).ToList();
+            List<Transactions> Data = mymodel.Transactionsviewlist;
+            //List<Transactions> Data = businesobj.Transaction.Where(x => x.accountnumber == id.ToString()).OrderByDescending(x => x.TransactionID).ToList();
+            foreach (var items in mymodel.Transactionsviewlist)
+            {
+                ViewBag.acnum = items.accountnumber;
+                ViewBag.accountype = items.acctypename;
+                ViewBag.bankbal = items.bank_balance;
+            }
+            string n = string.Format("{0:yyyy-MM-dd_hh-mm-ss-tt}.pdf",DateTime.Now);
+            var fname = ViewBag.acnum+n ;
+            return new PartialViewAsPdf("_JobPrint", mymodel)
+            {
+                //FileName = "TestPartialViewAsPdf.pdf"
+                FileName = fname
 
+            };
         }
         public ActionResult transfer(string id)
         {
@@ -535,44 +546,7 @@ namespace Bank_project.Controllers
             return View(mymodel);
 
         }
-        //[HttpPost]
-        //public ActionResult transfers(Transactions transactionparam)
-        //{
-        //    float bal = Convert.ToSingle(TempData["bankblc"]);
 
-
-        //    if (transactionparam.Transactionamount > 0 && transactionparam.tr_type == "Deposit")
-        //    {
-        //        bal = transactionparam.Transactionamount + bal;
-        //    }
-        //    else if (transactionparam.Transactionamount > 0 && transactionparam.tr_type == "Withdraw")
-        //    {
-        //        bal = bal - transactionparam.Transactionamount;
-        //    }
-        //    else if(transactionparam.Transactionamount<=0 &&(transactionparam.tr_type=="Deposit"||transactionparam.tr_type=="Withdraw"))
-        //    {
-        //        ViewBag.transactamountmsg = "Please enter amount greater that 100";
-        //    }
-        //    transactionparam.bank_balance = bal;
-        //    transactionparam.accountnumber = TempData["accountid"].ToString();
-        //    transactionparam.Transaction_Date = DateTime.Now;
-        //    transactionparam.acctypename = TempData["acctypname"].ToString();
-        //    transactionparam.previous_balance = Convert.ToSingle(TempData["bankblc"]);
-        //    int tid = Convert.ToInt32(TempData["trid"]);
-        //    transactionparam.TransactionID = tid + 1;
-        //    // businesobj.Entry(transactionparam).State = EntityState.Modified;
-        //    businesobj.Transaction.Add(transactionparam);
-        //    businesobj.SaveChanges();
-
-        //    //var registrationu = new Registration()
-        //    //{
-        //    //    bank_balance = transactionparam.bank_balance,            
-        //    //};
-        //    //businesobj.Entry(registrationu).State = EntityState.Modified;
-        //    //businesobj.SaveChanges();
-        //    return View();
-
-        //}
 
         [HttpPost]
         public ActionResult transfer(resultviewmodel transactionparam)
