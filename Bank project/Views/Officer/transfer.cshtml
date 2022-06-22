@@ -7,7 +7,7 @@
 
 <h2>Account Details</h2>
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("Transfer", "Officer", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     {

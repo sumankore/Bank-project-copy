@@ -1,0 +1,70 @@
+﻿@model Bank_project.Models.resultviewmodel
+@{
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+
+<div>
+    <!--<div>
+        <label>First Name:</label>
+
+    </div>-->
+    @*<div>*@
+    @*<label>Middle Initial:</label>
+            @Html.TextBoxFor(x => x.MiddleInitial, new { length = 1 })
+        </div>*@
+    <!--<div>
+        <label>Transaction Amount:</label>
+
+    <div>-->
+    @*<label>Date of Birth:</label>
+            @Html.EditorFor(x => x.DateOfBirth) //Editor Template for DateTime
+        </div>
+        <div>
+            <label>UserName: </label>
+            @Html.TextBoxFor(x => x.UserName)
+        </div>
+        <div>
+            @Html.CheckBoxFor(x => x.IsAdmin)
+            <label for="IsAdmin">Admin</label>
+        </div>*@
+    <div class="form-group">
+        @Html.DisplayNameFor(m => m.Registerviews.Name)
+        @Html.EditorFor(m => m.Registerviews.Name)
+    </div>
+    <div class="form-group">
+        @Html.DisplayNameFor(m => m.Transactionsviews.tr_type)
+        @Html.EditorFor(m => m.Registerviews.Name)
+    </div>
+    <div class="transaction-type">
+        <div class="form-group">
+            @Html.LabelFor(model => Model.Transactionsviews.tr_type, "Transaction Type", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.tr_type, new { htmlAttributes = new { @class = "form-control" } })*@
+                Deposit
+                @Html.RadioButtonFor(model => Model.Transactionsviews.tr_type, "Deposit")
+                Withdraw
+                @Html.RadioButtonFor(model => Model.Transactionsviews.tr_type, "Withdraw")
+                @*<div>
+                        <label>@Html.RadioButton("Transaction-Type", true) Deposit</label>
+                    </div>
+                    <div>
+                        <label>@Html.RadioButton("Transaction-Type", false) Withdraw</label>
+                    </div>*@
+                @Html.ValidationMessageFor(model => Model.Transactionsviews.tr_type, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(m => m.Transactionsviews.Transactionamount)
+            @Html.EditorFor(m => m.Transactionsviews.Transactionamount)
+        </div>
+        @*<div class="form-group">
+                @Html.DisplayNameFor(m => m)
+                @Html.EditorFor(m => m.User.DateOfBirth)
+            </div>
+            <div class="form-group">
+                @Html.DisplayNameFor(m => m.User.Roles.Role)
+                @Html.DropDownListFor(m => m.User.RoleId, new SelectList(Model.Roles, "Id", "Role"))
+            </div>*@
+    </div>
