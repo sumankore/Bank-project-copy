@@ -4,15 +4,14 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" />
 @*@model IPagedList<Bank_project.Models.resultviewmodel>*@
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "accreate")
 </p>
 @using (Html.BeginForm("custommeraccs", "Officer", FormMethod.Get))
 {
-    <p>
-        Search Name: @Html.TextBox("Search_Data", ViewBag.FilterValue as string)
-        <input type="submit" value="Find" />
-    </p>
-}
+<p>
+    Search Name: @Html.TextBox("Search_Data", ViewBag.FilterValue as string)
+    <input type="submit" value="Find" />
+</p>}
 <table class="table">
     <tr>
         <th>
@@ -133,10 +132,15 @@
         @Html.ActionLink("Delete", "Delete", new { id = item.userid }) |
         @Html.ActionLink("Tranasactions", "transactions", new { id = item.accountnumber })
     </td>
-</tr>}
-    Page @(Model.Registerviewpl.PageCount < Model.Registerviewpl.PageNumber ? 0 : Model.Registerviewpl.PageNumber) of @Model.Registerviewpl.PageCount
-    @Html.PagedListPager(Model.Registerviewpl, Page_No => Url.Action("Index",
-                    new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))
+</tr>
+}
+
 
 </table>
-@Html.ActionLink("Back", "Index", "Officer")
+<div class="text-center">
+    
+    Page @(Model.Registerviewpl.PageCount < Model.Registerviewpl.PageNumber ? 0 : Model.Registerviewpl.PageNumber) of @Model.Registerviewpl.PageCount
+    @Html.PagedListPager(Model.Registerviewpl, Page_No => Url.Action("custommeraccs",
+                        new { Page_No, Sorting_Order = ViewBag.CurrentSortOrder, Filter_Value = ViewBag.FilterValue }))
+    </div>
+    @Html.ActionLink("Back", "Index", "Officer")

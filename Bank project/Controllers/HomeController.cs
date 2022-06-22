@@ -115,7 +115,7 @@ namespace Bank_project.Controllers
                             get_user.AccountLocked = true;
                             businesobj.SaveChanges();
 
-                            ViewBag.accountblockmsg = "Your account has been blocked";
+                            ViewBag.accountblockmsg = "Your account has been blocked please reset your password by to unblock";
                             LoginPage();
                         }
                     }

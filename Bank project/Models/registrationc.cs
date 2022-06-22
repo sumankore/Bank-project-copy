@@ -38,6 +38,10 @@ namespace Bank_project.Models
         public DateTime? AccountCreationDate { get; set; }
 
         public string aadhar { get; set; }
+        public bool EmailVerification { get; set; }
+
+        public string ActivationCode { get; set; } = null;
+        public string otp { get; set; }
 
         public float bank_balance { get; set; }
 
