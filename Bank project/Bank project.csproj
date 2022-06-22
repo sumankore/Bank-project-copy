@@ -499,7 +499,11 @@
     <Content Include="Views\admin\UnAuthorized.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Officer\Custommeraccs.cshtml" />
-    <Content Include="Views\Officer\transactions.cshtml" />
+    <Content Include="Views\Officer\Transactions.cshtml" />
+    <Content Include="Views\Officer\Editcustaccs.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Edit.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\Transactions.cshtml" />
+    <Content Include="Views\Officer\transfers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

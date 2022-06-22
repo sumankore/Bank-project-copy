@@ -7,81 +7,82 @@
 {
 @Html.AntiForgeryToken() {
 
-        foreach (var items in Model.Registerview)
+        //foreach (var items in Model.Registerview)
+        for(int i=0;i<Model.Registerviewlist.Count;i++)
         {
 <div class="form-horizontal">
     <h4>Edit Customer Details</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    @Html.HiddenFor(model => items.userid)
-
+    @Html.HiddenFor(m => m.Registerviewlist[i].userid)
     <div class="form-group">
-        @Html.LabelFor(model => items.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].Name, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => items.Name, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => items.Name, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.Registerviewlist[i].Name, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].Name, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => items.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].Email, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @ViewBag.Email
             @{TempData["Email"] = ViewBag.Email;}
             @*@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.ValidationMessageFor(model => items.Email, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].Email, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => items.DOB, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].DOB, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @*@Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control" } })*@
-            @Html.TextBoxFor(model => items.DOB, @"{0:yyyy\/MM\/dd}", new { @class = "datepicker form-control" })
+            @Html.TextBoxFor(m => m.Registerviewlist[i].DOB, @"{0:yyyy\/MM\/dd}", new { @class = "datepicker form-control" })
 
-            @Html.ValidationMessageFor(model => items.DOB, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].DOB, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => items.Gender, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].Gender, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @*@Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })*@
             Male
-            @Html.RadioButtonFor(model => items.Gender, "Male")
+            @Html.RadioButtonFor(m => m.Registerviewlist[i].Gender, "Male")
             Female
-            @Html.RadioButtonFor(model => items.Gender, "Female")
-            @Html.ValidationMessageFor(model => items.Gender, "", new { @class = "text-danger" })
+            @Html.RadioButtonFor(m => m.Registerviewlist[i].Gender, "Female")
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].Gender, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => items.accountnumber, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].accountnumber, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.HiddenFor(model => items.accountnumber, new { htmlAttributes = new { @class = "form-control" } })
-            @ViewBag.accountnumber
-            @{TempData["accountid"] = ViewBag.accountnumber;}
-            @Html.ValidationMessageFor(model => items.accountnumber, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.Registerviewlist[i].accountnumber, new { htmlAttributes = new { @class = "form-control" } })
+            @ViewBag.acnum
+            @{TempData["accountid"] = ViewBag.acnum;}
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].accountnumber, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    @*<div class="form-group">
-            @Html.LabelFor(model => model.acctype, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="form-group">
+            @Html.HiddenFor(m => m.Registerviewlist[i].acctype, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.acctype, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.acctype, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.Registerviewlist[i].acctype, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Registerviewlist[i].acctype, "", new { @class = "text-danger" })
             </div>
-        </div>*@
+        </div>
     <div class="form-group">
-        @Html.LabelFor(model => items.acctype,"Account Type", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].acctypename, "Account Type", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @ViewBag.Accounttype
-            @{TempData["accountype"] = ViewBag.Accounttype;}
+            @ViewBag.Accountype
+            @{TempData["accountype"] = ViewBag.accountype;}
             @*@Html.DropDownListFor(model => model.acctype, new SelectList(ViewBag.acctypes, "Value", "Text"), "--select--", new { @class = "form-control" })*@
-            @Html.HiddenFor(model => items.acctype, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => items.acctype, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.Registerviewlist[i].acctypename, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].acctypename, "", new { @class = "text-danger" })
         </div>
     </div>
+  
 
     @*<div class="form-group">
             @Html.LabelFor(model => model.acctypename, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -92,36 +93,36 @@
         </div>*@
 
     <div class="form-group">
-        @Html.LabelFor(model => items.mobile, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].mobile, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => items.mobile, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => items.mobile, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.Registerviewlist[i].mobile, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].mobile, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => items.aadhar, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(m => m.Registerviewlist[i].aadhar, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.EditorFor(model => items.aadhar, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => items.aadhar, "", new { @class = "text-danger" })
+            @Html.EditorFor(m => m.Registerviewlist[i].aadhar, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].aadhar, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.HiddenFor(model => items.bank_balance, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.HiddenFor(m => m.Registerviewlist[i].bank_balance, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.HiddenFor(model => items.bank_balance, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => items.bank_balance, "", new { @class = "text-danger" })
+            @Html.HiddenFor(m => m.Registerviewlist[i].bank_balance, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(m => m.Registerviewlist[i].bank_balance, "", new { @class = "text-danger" })
         </div>
     </div>
 
-    @*<div class="form-group">
-            @Html.HiddenFor(model =>items.role, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="form-group">
+            @Html.HiddenFor(m => m.Registerviewlist[i].role, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.HiddenFor(model => model.roleid, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.roleid, "", new { @class = "text-danger" })
+                @Html.HiddenFor(m => m.Registerviewlist[i].roleid, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(m => m.Registerviewlist[i].roleid, "", new { @class = "text-danger" })
             </div>
-        </div>*@
+        </div>
 
     @*<div class="form-group">
             @Html.HiddenFor(model => model.password, htmlAttributes: new { @class = "control-label col-md-2" })

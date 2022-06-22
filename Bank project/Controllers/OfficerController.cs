@@ -350,50 +350,71 @@ namespace Bank_project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             //IEnumerable<Registration> ids = businesobj.registration.Where(x => x.userid == id);
-            resultviewmodel ids = new resultviewmodel();
+            //resultviewmodel ids = new resultviewmodel();
             //var accounts = Getaccounts();
-           ids.Registerview = Getaccounts().Where(x => x.userid == id);
-            if (ids == null)
-            {
-                return HttpNotFound();
-            }
+           //ids.Registerview = Getaccounts().Where(x => x.userid == id);
+           // if (ids == null)
+           // {
+           //     return HttpNotFound();
+           // }
            
 
-                foreach (var iems in ids.Registerview)
-                {
-                    acnum = iems.accountnumber;
-                    actype = iems.acctype;
-                    email = iems.Email;
+           //     foreach (var iems in ids.Registerview)
+           //     {
+           //         acnum = iems.accountnumber;
+           //         actype = iems.acctype;
+           //         email = iems.Email;
 
-                }
+           //     }
 
-                var acctyplist = businesobj.actypcrt.ToList();
-            ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", actype);
-            ViewBag.accountnumber = acnum;
-            var acctype = businesobj.actypcrt.Find(actype);
+           //     var acctyplist = businesobj.actypcrt.ToList();
+           // ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", actype);
+           // ViewBag.accountnumber = acnum;
+           // var acctype = businesobj.actypcrt.Find(actype);
 
-            ViewBag.Accounttype = acctype.account_type;
-            ViewBag.Email = email;
-            //ViewBag.
-            return View(ids);
+           // ViewBag.Accounttype = acctype.account_type;
+           // ViewBag.Email = email;
+
+
+            resultviewmodel mymodel = new resultviewmodel();
+
+            mymodel.Registerviewlist = Getaccounts().Where(x => x.userid == id).ToList();
+            if (mymodel.Registerviewlist == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            foreach (var items in mymodel.Registerviewlist)
+            {
+                ViewBag.acnum = items.accountnumber;
+                ViewBag.accountype = items.acctypename;
+                //ViewBag.bankbal = items.bank_balance;
+                ViewBag.email = items.Email;
+            }
+            //mymodel.Registerview = Getaccounts();
+            return View(mymodel);
+
+           
         }
 
         [HttpPost]
-        public ActionResult Editcustacc(Registration accparm)
+        public ActionResult Editcustacc(resultviewmodel accparm)
         {
-            var acctyplist = businesobj.actypcrt.ToList();
-            ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", accparm.acctype);
-            //  var aclimit = businesobj.actypcrt.Find(accparm.acctype);
-            // accparm.bank_balance = aclimit.min_limit;
-            var name = businesobj.actypcrt.Where(c => c.acc_type_id == accparm.acctype);
-            foreach (var acctypname in name)
-                accparm.acctypename = acctypname.account_type;
-            //accparm.accountid = ViewBag.accountid;
-            int x = Convert.ToInt32(TempData["accountid"]);
-            accparm.Email = TempData["Email"].ToString();
-            accparm.accountnumber = Convert.ToString(x);
-            businesobj.Entry(accparm).State = EntityState.Modified;
-            businesobj.SaveChanges();
+            for (int i = 0; i < accparm.Registerviewlist.Count(); i++)
+            {
+                var acctyplist = businesobj.actypcrt.ToList();
+                ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", accparm.Registerviewlist[i].acctype);
+                //  var aclimit = businesobj.actypcrt.Find(accparm.acctype);
+                // accparm.bank_balance = aclimit.min_limit;
+                var name = businesobj.actypcrt.ToList().Where(c => c.acc_type_id == accparm.Registerviewlist[i].acctype);
+                foreach (var acctypname in name)
+                    accparm.Registerviewlist[i].acctypename = acctypname.account_type;
+                //accparm.accountid = ViewBag.accountid;
+                int x = Convert.ToInt32(TempData["accountid"]);
+                accparm.Registerviewlist[i].Email = TempData["Email"].ToString();
+                accparm.Registerviewlist[i].accountnumber = Convert.ToString(x);
+                businesobj.Entry(accparm.Registerviewlist[i]).State = EntityState.Modified;
+                businesobj.SaveChanges();
+            }
             return RedirectToAction("Accountlist");
         }
 
@@ -490,7 +511,7 @@ namespace Bank_project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             resultviewmodel mymodel = new resultviewmodel();
-
+            //var transactionlist = businesobj.Transaction.Where(x => x.accountnumber == id);
             //mymodel.Transactionsview = GetTransactions().OrderByDescending(x=>x.TransactionID).Where(x=>x.accountnumber == id.ToString()).FirstOrDefault();
             mymodel.Transactionsviewlist = GetTransactions().Where(x => x.accountnumber == id.ToString())
                  .OrderByDescending(x => x.TransactionID).Take(1).ToList();
@@ -510,44 +531,85 @@ namespace Bank_project.Controllers
             return View(mymodel);
 
         }
+        //[HttpPost]
+        //public ActionResult transfers(Transactions transactionparam)
+        //{
+        //    float bal = Convert.ToSingle(TempData["bankblc"]);
+
+
+        //    if (transactionparam.Transactionamount > 0 && transactionparam.tr_type == "Deposit")
+        //    {
+        //        bal = transactionparam.Transactionamount + bal;
+        //    }
+        //    else if (transactionparam.Transactionamount > 0 && transactionparam.tr_type == "Withdraw")
+        //    {
+        //        bal = bal - transactionparam.Transactionamount;
+        //    }
+        //    else if(transactionparam.Transactionamount<=0 &&(transactionparam.tr_type=="Deposit"||transactionparam.tr_type=="Withdraw"))
+        //    {
+        //        ViewBag.transactamountmsg = "Please enter amount greater that 100";
+        //    }
+        //    transactionparam.bank_balance = bal;
+        //    transactionparam.accountnumber = TempData["accountid"].ToString();
+        //    transactionparam.Transaction_Date = DateTime.Now;
+        //    transactionparam.acctypename = TempData["acctypname"].ToString();
+        //    transactionparam.previous_balance = Convert.ToSingle(TempData["bankblc"]);
+        //    int tid = Convert.ToInt32(TempData["trid"]);
+        //    transactionparam.TransactionID = tid + 1;
+        //    // businesobj.Entry(transactionparam).State = EntityState.Modified;
+        //    businesobj.Transaction.Add(transactionparam);
+        //    businesobj.SaveChanges();
+
+        //    //var registrationu = new Registration()
+        //    //{
+        //    //    bank_balance = transactionparam.bank_balance,            
+        //    //};
+        //    //businesobj.Entry(registrationu).State = EntityState.Modified;
+        //    //businesobj.SaveChanges();
+        //    return View();
+
+        //}
+
         [HttpPost]
-        public ActionResult transfer(Transactions transactionparam)
+        public ActionResult transfer(resultviewmodel transactionparam)
         {
             float bal = Convert.ToSingle(TempData["bankblc"]);
-
-
-            if (transactionparam.Transactionamount > 0 && transactionparam.tr_type == "Deposit")
+            for (int i = 0; i < transactionparam.Transactionsviewlist.Count; i++)
             {
-                bal = transactionparam.Transactionamount + bal;
-            }
-            else if (transactionparam.Transactionamount > 0 && transactionparam.tr_type == "Withdraw")
-            {
-                bal = bal - transactionparam.Transactionamount;
-            }
-            else if(transactionparam.Transactionamount<=0 &&(transactionparam.tr_type=="Deposit"||transactionparam.tr_type=="Withdraw"))
-            {
-                ViewBag.transactamountmsg = "Please enter amount greater that 100";
-            }
-            transactionparam.bank_balance = bal;
-            transactionparam.accountnumber = TempData["accountid"].ToString();
-            transactionparam.Transaction_Date = DateTime.Now;
-            transactionparam.acctypename = TempData["acctypname"].ToString();
-            transactionparam.previous_balance = Convert.ToSingle(TempData["bankblc"]);
-            int tid = Convert.ToInt32(TempData["trid"]);
-            transactionparam.TransactionID = tid + 1;
-            // businesobj.Entry(transactionparam).State = EntityState.Modified;
-            businesobj.Transaction.Add(transactionparam);
-            businesobj.SaveChanges();
 
+                if (transactionparam.Transactionsviewlist[i].Transactionamount > 0 && transactionparam.Transactionsviewlist[i].tr_type == "Deposit")
+                {
+                    bal = transactionparam.Transactionsviewlist[i].Transactionamount + bal;
+                }
+                else if (transactionparam.Transactionsviewlist[i].Transactionamount > 0 && transactionparam.Transactionsviewlist[i].tr_type == "Withdraw")
+                {
+                    bal = bal - transactionparam.Transactionsviewlist[i].Transactionamount;
+                }
+                else if (transactionparam.Transactionsviewlist[i].Transactionamount <= 0 && (transactionparam.Transactionsviewlist[i].tr_type == "Deposit" || transactionparam.Transactionsviews.tr_type == "Withdraw"))
+                {
+                    ViewBag.transactamountmsg = "Please enter amount greater that 100";
+                }
+                transactionparam.Transactionsviewlist[i].bank_balance = bal;
+                transactionparam.Transactionsviewlist[i].accountnumber = TempData["accountid"].ToString();
+                transactionparam.Transactionsviewlist[i].Transaction_Date = DateTime.Now;
+                transactionparam.Transactionsviewlist[i].acctypename = TempData["acctypname"].ToString();
+                transactionparam.Transactionsviewlist[i].previous_balance = Convert.ToSingle(TempData["bankblc"]);
+                int tid = Convert.ToInt32(TempData["trid"]);
+                transactionparam.Transactionsviewlist[i].TransactionID = tid + 1;
+                // businesobj.Entry(transactionparam).State = EntityState.Modified;
+                businesobj.Transaction.Add(transactionparam.Transactionsviewlist[i]);
+                businesobj.SaveChanges();
+            }
             //var registrationu = new Registration()
             //{
             //    bank_balance = transactionparam.bank_balance,            
             //};
             //businesobj.Entry(registrationu).State = EntityState.Modified;
             //businesobj.SaveChanges();
-            return View();
+            return View("Transactions");
 
         }
+
 
         //public ActionResult Transactionhistory()
         //{

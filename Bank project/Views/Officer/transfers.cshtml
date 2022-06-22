@@ -1,0 +1,29 @@
+﻿@*@model Bank_project.Models.Transactions*@
+@model Bank_project.Models.resultviewmodel
+
+@{
+    ViewBag.Title = "transfers";
+}
+
+<h2>transfers</h2>
+
+
+<h2>Add a User</h2>
+@{TempData["trid"] = ViewBag.transactionid;}
+@ViewBag.transactionid
+@{TempData["accountid"] = ViewBag.acnum;}
+@ViewBag.acnum
+@ViewBag.bankbal
+@{TempData["bankblc"] = ViewBag.bankbal;}
+@using (Html.BeginForm("transfers", "Officer", FormMethod.Post))
+{
+   
+    @ViewBag.transactionid
+   
+    @ViewBag.acnum
+    @ViewBag.bankbal
+
+
+    @Html.EditorForModel()
+    <input type="submit" value="Save" />
+}
