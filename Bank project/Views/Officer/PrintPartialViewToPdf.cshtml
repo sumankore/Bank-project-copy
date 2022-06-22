@@ -1,0 +1,67 @@
+﻿@*@model IEnumerable<Bank_project.Models.Transactions>*@
+@model List<Bank_project.Models.Transactions>
+
+<p>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Transactionamount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.accountnumber)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.acctypename)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tr_type)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.bank_balance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.previous_balance)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Transaction_Date)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transactionamount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.accountnumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.acctypename)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tr_type)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.bank_balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.previous_balance)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Transaction_Date)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.TransactionID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.TransactionID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.TransactionID })
+            </td>
+        </tr>
+    }
+
+</table>
