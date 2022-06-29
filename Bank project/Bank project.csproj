@@ -514,6 +514,7 @@
     <Content Include="Views\Home\changepassword.cshtml" />
     <Content Include="Views\Home\forgotpassword.cshtml" />
     <Content Include="Views\Shared\_JobPrint.cshtml" />
+    <Content Include="Views\admin\Registrationsuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

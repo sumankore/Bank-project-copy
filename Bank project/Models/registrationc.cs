@@ -19,7 +19,10 @@ namespace Bank_project.Models
         //    public acctypes acctypes { get; set; }
         [Key]
         public int customerid  { get; set; }
+        public string acc_type_id { get; set; }
+        public bool isactivee { get; set; }
 
+        public string account_type { get; set; }
         public string accountnumber { get; set; }
         public string Name { get; set; }
 
@@ -31,6 +34,7 @@ namespace Bank_project.Models
 
         public string acctype { get; set; }
         public string acctypename { get; set; }
+        public float min_limit { get; set; }
         public string roleid { get; set; }
         public string role { get; set; }
         // public string accountnumber { get; set; }

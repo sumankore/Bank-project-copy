@@ -1,85 +1,67 @@
-﻿@model Bank_project.Models.Registration
+﻿@model Bank_project.Models.resultviewmodel
+@{ ViewBag.Title = "Emp"; }
 
-@{
-    ViewBag.Title = "empdetails";
-}
-
-<h2>Employee Details</h2>
+<h2>Details</h2>
 
 <table class="table">
 
 
-    @*@foreach (var items in Model)*@
-    @*{*@
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.Name)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.Email)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.role)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.role)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.DOB)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.DOB)
-        </td>
-    </tr>
+    @foreach (var items in Model.Registerview)
+    {
+        <tr>
+            <td>
+                @*@Html.DisplayNameFor(model => model.Name)*@ Name
+            </td>
+            <td>
+                @*@Html.DisplayFor(model=>items.Name)*@
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @*@Html.DisplayNameFor(model => model.DOB)*@ Date of Birth
+            </td>
+            <td>
+                @Html.DisplayFor(model => items.DOB)
+            </td>
+        </tr>
 
-    <tr>
+        <tr>
+            <td>
+                @*@Html.DisplayNameFor(model => model.Gender)*@ Gender
+            </td>
+            <td>
+                @Html.DisplayFor(model => items.Gender)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @*@Html.DisplayNameFor(model => model.aadhar)*@ Aadhar
+            </td>
+            <td>
+                @Html.DisplayFor(model => items.aadhar)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @*@Html.DisplayNameFor(model => model.accountnumber)*@ Account Number
+            </td>
+            <td>
+                @Html.DisplayFor(model => items.accountnumber)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @*@Html.DisplayNameFor(model => model.acctypename)*@ Account Type
+            </td>
+            <td>
+                @Html.DisplayFor(model => items.acctypename)
+            </td>
+        </tr>
         <td>
-            @Html.DisplayNameFor(model => model.Gender)
+            @*@Html.DisplayNameFor(model => model.bank_balance)*@ Role
         </td>
         <td>
-            @Html.DisplayFor(model => Model.Gender)
+            @Html.DisplayFor(model => items.role)
         </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.aadhar)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.aadhar)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.accountnumber)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.accountnumber)
-        </td>
-    </tr>
-    <tr>
-        <td>
-            @Html.DisplayNameFor(model => model.acctypename)
-        </td>
-        <td>
-            @Html.DisplayFor(model => Model.acctypename)
-        </td>
-    </tr>
-    @*<td>
-            @Html.DisplayNameFor(model => model.bank_balance)
-        </td>*@
-    @*<td>
-            @Html.DisplayFor(model => Model.bank_balance)
-        </td>*@
+}
 </table>

@@ -1,48 +1,65 @@
-﻿@model Bank_project.Models.acctypes
+﻿@model Bank_project.Models.resultviewmodel
 
-@{
-    ViewBag.Title = "Deleteactyp";
-}
+@{ ViewBag.Title = "Deleteactyp"; }
 
 <h2>Deleteactyp</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>acctypes</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.account_type)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.account_type)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.min_limit)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.min_limit)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.isactive)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.isactive)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
+
+        <hr />
+        <dl class="dl-horizontal">
+            @foreach (var item in Model.acctyplist)
+            {
+                <dt>
+                    @*@Html.DisplayNameFor(model => model.Name)*@ Account Type
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.account_type)
+                </dd>
+
+                <dt>
+                    @*@Html.DisplayNameFor(model => model.Email)*@ Account Type ID
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.acc_type_id)
+                </dd>
+
+                <dt>
+                    @*@Html.DisplayNameFor(model => model.DOB)*@Minimum Limit
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.min_limit)
+                </dd>
+
+              
+
+                <dt>
+                    @*@Html.DisplayNameFor(model => model.isActive)*@ Isactive
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => item.isactive)
+                </dd>
+            }
+        </dl>
+
+
+        @*@using (Html.BeginForm()) {
+            @Html.AntiForgeryToken()*@
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
             @Html.ActionLink("Back to List", "Index")
         </div>
+
     }
+
+
 </div>
