@@ -577,7 +577,7 @@ namespace Bank_project.Controllers
                 businesobj.SaveChanges();
             }
             
-            return View("Transactions");
+            return View("Index");
 
         }
 
