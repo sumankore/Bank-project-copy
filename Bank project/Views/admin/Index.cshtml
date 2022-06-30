@@ -1,19 +1,17 @@
 ﻿
-@{
-    ViewBag.Title = "Index";
-}
+@{ ViewBag.Title = "Index"; }
 
 
 Welcome @ViewBag.Email
 
 @*<div>
-    @Html.ActionLink("Create Role", "rolecreate")
-</div>
-<div>
-    @Html.ActionLink("Create Account Types", "actypcreate")*@
+        @Html.ActionLink("Create Role", "rolecreate")
+    </div>
+    <div>
+        @Html.ActionLink("Create Account Types", "actypcreate")*@
 @*</div>*@
 
-<div>
+@*<div>
     @Html.ActionLink("Account Types", "Accounttypelist")
 </div>
 <div>
@@ -21,6 +19,53 @@ Welcome @ViewBag.Email
 </div>
 <div>
     @Html.ActionLink("Accounts List", "Employees")
+</div>*@
+
+
+
+
+
+<div class="container-fluid warning mt-5">
+    <div class="row">
+        <div class="col-3">
+            <div class="card rounded-circle" style="width: 18rem;background:lightblue;padding:10px;border-radius:20px;margin:3px">
+                <div class="card-body border-success rounded-2">
+                    <h5 class="card-title">Accounts Types</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+
+                        @Html.ActionLink("Account Types", "Accounttypelist")
+                    </h6>
+                    <p class="card-text">Check Available Account Types.</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card rounded-circle" style="width: 18rem; background: lightblue; padding: 10px; border-radius: 20px; margin: 3px">
+                <div class="card-body">
+                    <h5 class="card-title">Role Types</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @Html.ActionLink("Roles", "roleslist")
+                    </h6>
+                    <p class="card-text">Check Available Role Types.</p>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card rounded-circle" style="width: 18rem; background: lightblue; padding: 10px; border-radius: 20px; margin: 3px">
+                <div class="card-body">
+                    <h5 class="card-title">Employees List</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">
+                        @Html.ActionLink("Accounts List", "Employees")
+                    </h6>
+                    <p class="card-text">Check Employees List here.</p>
+
+                </div>
+            </div>
+        </div>
+       
+    </div>
 </div>
 <div>
 

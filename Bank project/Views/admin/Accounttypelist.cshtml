@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Bank_project.Models.acctypes>
-
+﻿@*@model IEnumerable<Bank_project.Models.acctypes>*@
+@model Bank_project.Models.resultviewmodel
 @{
     ViewBag.Title = "Account Types";
 }
@@ -7,39 +7,45 @@
 <h2>Account Types</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "actypcreate")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.account_type)
+            @*@Html.DisplayNameFor(model => model.account_type)*@ Account Type ID
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.min_limit)
+            @*@Html.DisplayNameFor(model => model.account_type)*@ Account Type
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.isactive)
+            @*@Html.DisplayNameFor(model => model.min_limit)*@Account Min. limit
         </th>
+        <!--<th>-->
+            @*@Html.DisplayNameFor(model => model.isactive)*@ <!--Isactive
+        </th>-->
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.account_type)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.min_limit)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isactive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Editacctyp", new { id=item.acc_type_id }) |
-            @*@Html.ActionLink("Details", "Details", new { id=item.acc_type_id }) |*@
-            @Html.ActionLink("Delete", "Deleteactyp", new { id=item.acc_type_id })
-        </td>
-    </tr>
+@foreach (var item in Model.acctyplist) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.acc_type_id)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.account_type)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.min_limit)
+    </td>
+    @*<td>
+        @Html.DisplayFor(modelItem => item.isactive)
+    </td>*@
+    <td>
+        @Html.ActionLink("Edit", "Editacctyp", new { id = item.acc_type_id }) |
+        @*@Html.ActionLink("Details", "Details", new { id=item.acc_type_id }) |*@
+        @Html.ActionLink("Delete", "Deleteactyp", new { id = item.acc_type_id })
+    </td>
+</tr>
 }
 
 </table>

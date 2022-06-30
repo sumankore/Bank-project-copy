@@ -154,7 +154,7 @@ namespace Bank_project.Controllers
                 empl.password = newpass;
                 logintbl.password = newpass;
                 businesobj.Entry(empl).State = System.Data.Entity.EntityState.Modified;
-
+                logintbl.AccountLocked = false;
                 businesobj.Entry(logintbl).State = System.Data.Entity.EntityState.Modified;
                 businesobj.SaveChanges();
 

@@ -1,8 +1,8 @@
-﻿@model IEnumerable<Bank_project.Models.roles>
+﻿@*@model IEnumerable<Bank_project.Models.roles>*@
+@model Bank_project.Models.resultviewmodel
 
-@{
-    ViewBag.Title = "roleslist";
-}
+
+@{ ViewBag.Title = "roleslist"; }
 
 <h2>roleslist</h2>
 
@@ -12,28 +12,34 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.rolename)
+            @*@Html.DisplayNameFor(model => model.rolename)*@ Role ID
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.isactive)
+            @*@Html.DisplayNameFor(model => model.rolename)*@ Role Name
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.isactive)*@ Is Active
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.rolename)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isactive)
-        </td>
-        <td>
-            @Html.ActionLink("Edit","editrole", new { id=item.roleid }) |
-            @*@Html.ActionLink("Details", "Details", new { id=item.roleid }) |*@
-            @Html.ActionLink("Delete", "Deleterole", new { id=item.roleid })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.roletyplist)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.roleid)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.rolename)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.isactive)
+    </td>
+    <td>
+        @Html.ActionLink("Edit", "editrole", new { id = item.roleid }) |
+        @*@Html.ActionLink("Details", "Details", new { id=item.roleid }) |*@
+        @Html.ActionLink("Delete", "Deleterole", new { id = item.roleid })
+    </td>
+</tr>}
 
 </table>

@@ -526,8 +526,6 @@ namespace Bank_project.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             resultviewmodel mymodel = new resultviewmodel();
-            //var transactionlist = businesobj.Transaction.Where(x => x.accountnumber == id);
-            //mymodel.Transactionsview = GetTransactions().OrderByDescending(x=>x.TransactionID).Where(x=>x.accountnumber == id.ToString()).FirstOrDefault();
             mymodel.Transactionsviewlist = GetTransactions().Where(x => x.accountnumber == id.ToString())
                  .OrderByDescending(x => x.TransactionID).Take(1).ToList();
 
@@ -578,35 +576,11 @@ namespace Bank_project.Controllers
                 businesobj.Transaction.Add(transactionparam.Transactionsviewlist[i]);
                 businesobj.SaveChanges();
             }
-            //var registrationu = new Registration()
-            //{
-            //    bank_balance = transactionparam.bank_balance,            
-            //};
-            //businesobj.Entry(registrationu).State = EntityState.Modified;
-            //businesobj.SaveChanges();
+            
             return View("Transactions");
 
         }
 
 
-        //public ActionResult Transactionhistory()
-        //{
-        //    //string accnumber = Convert.ToString(id);
-        //    //if (id == null)
-        //    //{
-        //    //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    //}
-
-        //    var accnumber = TempData["accountid"].ToString();
-
-        //    var transactionhistory = businesobj.Transaction.Where(x => x.accountnumber == accnumber).OrderByDescending(x => x.TransactionID);
-        //    foreach (var transactiondetails in transactionhistory)
-        //    {
-        //        ViewBag.accountnumber = transactiondetails.accountnumber;
-        //        ViewBag.acctype = transactiondetails.acctypename;
-        //    }
-        //    return View(transactionhistory);
-        //}
-
-    }
+           }
 }

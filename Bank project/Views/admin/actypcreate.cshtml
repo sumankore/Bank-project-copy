@@ -1,4 +1,4 @@
-﻿@model Bank_project.Models.acctypes
+﻿@model Bank_project.Models.registrationc
 
 @{
     ViewBag.Title = "Create Account Type";
@@ -15,7 +15,7 @@
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="form-group">
-        @Html.LabelFor(model => model.acc_type_id, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.acc_type_id,"Account Type ID", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.acc_type_id, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.acc_type_id, "", new { @class = "text-danger" })
@@ -30,7 +30,7 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.account_type, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.account_type, "Account Type", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.account_type, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.account_type, "", new { @class = "text-danger" })
@@ -38,7 +38,7 @@
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.min_limit, htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.min_limit,"Minimum Limit", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             @Html.EditorFor(model => model.min_limit, new { htmlAttributes = new { @class = "form-control" } })
             @Html.ValidationMessageFor(model => model.min_limit, "", new { @class = "text-danger" })

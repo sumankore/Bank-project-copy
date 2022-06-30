@@ -1,10 +1,13 @@
 ﻿using Bank_project.Models;
 using Bank_project.security;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 
@@ -36,19 +39,14 @@ namespace Bank_project.Controllers
 
         public ActionResult Accounttypelist()
         {
-            var accounts = businesobj.actypcrt.ToList();
+            //var accounts = businesobj.actypcrt.ToList();
+            resultviewmodel rm = new resultviewmodel();
+            rm.acctyplist = GetaccountsTypes().Where(x => x.isactive = true).ToList();
 
-            return View(accounts);
+            return View(rm);
         }
 
-        public ActionResult Createac(acctypes customermdlparam)
-        {
-            if (ModelState.IsValid)
-            {
 
-            }
-            return View();
-        }
         public ActionResult actypcreate()
         {
 
@@ -56,7 +54,7 @@ namespace Bank_project.Controllers
 
         }
         [HttpPost]
-        public ActionResult actypcreate(acctypes actyparam)
+        public ActionResult actypcreate(registrationc actyparam)
         {
             bool flag = false;
             var idlist = businesobj.actypcrt.ToList();
@@ -73,61 +71,68 @@ namespace Bank_project.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    actyparam.isactive = true;
-                    businesobj.actypcrt.Add(actyparam);
-                    businesobj.SaveChanges();
+                    var actypes = new acctypes()
+                    {
+                        account_type = actyparam.account_type,
+                        acc_type_id = actyparam.acc_type_id,
+                        min_limit = actyparam.min_limit,
+                        isactive = true,
 
+                    };
+
+
+                    businesobj.actypcrt.Add(actypes);
+
+                    businesobj.SaveChanges();
+                    
                 }
 
             }
             ModelState.Clear();
 
 
-            return View(actyparam);
+            return RedirectToAction("Accounttypelist");
 
         }
 
         public ActionResult Editacctyp(string id)
         {
+            resultviewmodel rm = new resultviewmodel();
+            rm.acctyplist = GetaccountsTypes().Where(x => x.acc_type_id == id).ToList();
+            foreach (var item in rm.acctyplist)
+            {
+                ViewBag.Accountype = item.account_type;
+                ViewBag.actypid = item.acc_type_id;
 
-            var ids = businesobj.actypcrt.Find(id);
-            return View(ids);
+            }
+            return View(rm);
+
         }
 
         [HttpPost]
-        public ActionResult Editacctyp(acctypes acctyp)
+        public ActionResult Editacctyp(resultviewmodel acctyp)
         {
+            for (int i = 0; i < acctyp.acctyplist.Count; i++)
+            {
 
-            //if (ModelState.IsValid)
-            //{
-
-            //    var acctypes = new acctypes()
-            //    {
-            //        //acc_type_id = acctyp.acc_type_id,
-            //        account_type = acctyp.account_type,
-            //        min_limit = acctyp.min_limit,
-            //        isactive = acctyp.isactive,
-            //    };
-            //    businesobj.actypcrt.Add(acctypes);
-            //    businesobj.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-            //var acctyplist = businesobj.actypcrt.ToList();
-            //ModelState.Clear();
-            //return View(acctyp);
-            businesobj.Entry(acctyp).State = EntityState.Modified;
-            businesobj.SaveChanges();
+                acctyp.acctyplist[i].account_type = @TempData["actype"].ToString();
+                acctyp.acctyplist[i].acc_type_id = @TempData["actypeid"].ToString();
+                businesobj.Entry(acctyp.acctyplist[i]).State = EntityState.Modified;
+                businesobj.SaveChanges();
+            }
             return RedirectToAction("Accounttypelist");
         }
 
         public ActionResult Deleteactyp(string id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var ids = businesobj.actypcrt.Find(id);
+
+            resultviewmodel ids = new resultviewmodel();
+            ids.acctyplist = GetaccountsTypes().Where(x => x.acc_type_id == id).ToList();
+            //var ids = businesobj.registration.Find(id);
             if (ids == null)
             {
                 return HttpNotFound();
@@ -152,10 +157,16 @@ namespace Bank_project.Controllers
 
         public ActionResult roleslist()
         {
-            var roles = businesobj.role.ToList();
-            //var roles = businesobj.role.Find(roles.)
+            resultviewmodel rm = new resultviewmodel();
+            rm.roletyplist = GetrolesTypes();
 
-            return View(roles);
+            return View(rm);
+
+            //var roles = businesobj.role.ToList();
+            ////var roles = businesobj.role.Find(roles.)
+
+
+            //return View(roles);
         }
 
         public ActionResult rolecreate()
@@ -163,7 +174,7 @@ namespace Bank_project.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult rolecreate(roles roleadd)
+        public ActionResult rolecreate(Registration roleadd)
 
         {
             bool flag = false;
@@ -181,29 +192,52 @@ namespace Bank_project.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    roleadd.isactive = true;
-                    businesobj.role.Add(roleadd);
+                    var roles = new roles()
+                    {
+                        roleid = roleadd.roleid,
+                        isactive = true,
+                        rolename = roleadd.role,
+                    };
+
+                    businesobj.role.Add(roles);
                     businesobj.SaveChanges();
 
                 }
 
             }
-            return View(roleadd);
+            return RedirectToAction("roleslist");
         }
 
         public ActionResult editrole(string id)
         {
+            resultviewmodel rm = new resultviewmodel();
+            rm.roletyplist = GetrolesTypes().Where(x => x.roleid == id).ToList();
+            foreach (var item in rm.roletyplist)
+            {
+                ViewBag.Rolename = item.rolename;
+                ViewBag.roleid = item.roleid;
 
-            var ids = businesobj.role.Find(id);
-            return View(ids);
+            }
+            return View(rm);
+
+            //var ids = businesobj.role.Find(id);
+            //return View(ids);
         }
 
 
         [HttpPost]
-        public ActionResult editrole(roles role)
+        public ActionResult editrole(resultviewmodel role)
         {
-            businesobj.Entry(role).State = EntityState.Modified;
-            businesobj.SaveChanges();
+            for (int i = 0; i < role.roletyplist.Count; i++)
+            {
+
+                role.roletyplist[i].roleid = @TempData["roleid"].ToString();
+                businesobj.Entry(role.acctyplist[i]).State = EntityState.Modified;
+                businesobj.SaveChanges();
+
+                //businesobj.Entry(role).State = EntityState.Modified;
+                //businesobj.SaveChanges();
+            }
             return RedirectToAction("roleslist");
         }
 
@@ -237,20 +271,63 @@ namespace Bank_project.Controllers
 
         }
 
-        public ActionResult Employees()
 
+        public ActionResult Employees(string Sorting_Order, string Search_Data, string Filter_Value, int? Page_No)
         {
-            var employlist = businesobj.registration.Where(x => x.role != "Customer"&&x.role!="Admin");
-            //   var employees = businesobj.registration.ToList();
 
-            return View(employlist);
+            ViewBag.CurrentSortOrder = Sorting_Order;
+            ViewBag.SortingName = String.IsNullOrEmpty(Sorting_Order) ? "Name_Description" : "";
+            ViewBag.SortingDate = Sorting_Order == "Date_Enroll" ? "Date_Description" : "Date";
+
+            if (Search_Data != null)
+            {
+                Page_No = 1;
+            }
+            else
+            {
+                Search_Data = Filter_Value;
+            }
+
+            ViewBag.FilterValue = Search_Data;
+            var employeelist = from accs in businesobj.registration.Where(x => x.role != "Customer" && x.isActive == true) select accs;
+            if (!String.IsNullOrEmpty(Search_Data))
+
+            {
+                employeelist = employeelist.Where(accs => accs.Name.ToUpper().Contains(Search_Data.ToUpper()));
+            }
+            switch (Sorting_Order)
+            {
+                case "Name_Description":
+                    employeelist = employeelist.OrderByDescending(x => x.Name);
+                    break;
+                case "Date":
+                    employeelist = employeelist.OrderByDescending(x => x.AccountCreationDate);
+                    break;
+
+                case "Date_Enroll":
+
+                    employeelist = employeelist.OrderBy(x => x.DOB);
+
+                    break;
+                default:
+                    employeelist = employeelist.OrderBy(x => x.accountnumber);
+                    break;
+            }
+
+            resultviewmodel srVM = new resultviewmodel();
+            int pageSize = 3;
+            int pageNumber = (Page_No ?? 1);
+            srVM.Registerviewpl = employeelist.ToList().ToPagedList(pageNumber, pageSize);
+            return View(srVM);
+
+
         }
+
 
 
         public ActionResult addemployee()
 
         {
-
             var rolelist = businesobj.role.Where(x => x.isactive == true & x.rolename != "Customer");
             ViewBag.rolelist = new SelectList(rolelist, "roleid", "rolename");
             var acctyplist = businesobj.actypcrt.Where(x => x.isactive == true);
@@ -341,9 +418,16 @@ namespace Bank_project.Controllers
                     ////           break;
                     ////       }
                     ////   }
-                    ////if (flag == false)
-                    ////{
-
+                   
+                  //var roleids = businesobj.role.Where(x=>x.roleid==reg.roleid);
+                  //  foreach (var role in roleids)
+                  //  {
+                  //      reg.roleid = role.roleid;
+                  //      reg.role = role.rolename;
+                  //  }
+                    ViewBag.Email = Session["Email"];
+                    reg.ActivationCode = Guid.NewGuid().ToString(); ;
+                    SendEmailToUser(reg.Email, reg.ActivationCode.ToString());
                     var registration = new Registration()
                     {
                         roleid = reg.roleid,
@@ -360,6 +444,8 @@ namespace Bank_project.Controllers
                         aadhar = reg.aadhar,
                         AccountCreationDate = DateTime.Now,
                         password = passwordd,
+                        ActivationCode = reg.ActivationCode,
+                        accountcreatedby = ViewBag.Email,
                         //accountid = reg.accountid,
 
                     };
@@ -380,157 +466,80 @@ namespace Bank_project.Controllers
                     };
                     businesobj.logindetails.Add(logindetails);
                     businesobj.SaveChanges();
-                    return View("Index");
+                    ViewBag.regsuccess = "Your registration is successful please check your email";
+                    return View("Registrationsuccess");
+                    //return View("Index");
                 }
             }
 
             return View();
 
         }
-            //   bool flag = false;
-            //   var name = businesobj.actypcrt.Where(c => c.acc_type_id == reg.acctype);
-            //   foreach (var acctypname in name)
-
-            //       reg.acctypename = acctypname.account_type;
-
-            //   var rolenames = businesobj.role.Where(c => c.roleid== reg.role);
-            //   foreach (var rolename in rolenames)
-
-            //       reg.role=rolename.rolename;
-
-            //   //var rolenames = businesobj.role.Where(x => x.rolename != "Customer" & x.isactive == true);
-
-            //   //foreach (var rolename in rolenames)
-
-            //   //    reg.role = rolename.rolename;
-            //   var useridds =0;
-
-
-            //   var emailist = businesobj.registration.ToList();
-
-            ////   var aclimit = businesobj.actypcrt.Find(reg.acctype);
-            //  // int accountidd = AutoPRNo();
-            //   string passwordd = password();
-            //   //  reg.bank_balance = aclimit.min_limit;
-
-            //   for (int i = 0; i < emailist.Count - 1; i++)
-            //   {
-            //       if (emailist[i].Email == reg.Email)
-            //       {
-            //           ViewBag.Message = "Email already exists!";
-            //           flag = true;
-            //           break;
-
-            //       }
-            //   }
-            //   if (flag == false)
-            //   {
-            //       var registration = new Registration()
-            //       {
-            //          acctype = reg.acctype,
-            //           Name = reg.Name,
-            //           DOB = reg.DOB,
-            //           Email = reg.Email,
-            //           Gender = reg.Gender,
-            //           acctypename = reg.acctypename,
-            //           mobile = reg.mobile,
-            //           role = reg.role,
-            //           // bank_balance = reg.bank_balance,
-            //           isActive = true,
-            //           aadhar = reg.aadhar,
-            //           AccountCreationDate = DateTime.Now,
-            //           password = passwordd,
-            //          accountid = reg.accountid,
-            //          };
-            //       businesobj.registration.Add(registration);
-            //       businesobj.SaveChanges();
-
-            //       var userids = businesobj.registration.Where(c => c.Email == reg.Email);
-            //       foreach (var useridd in userids)
-            //           useridds = useridd.userid;
-
-            //       var logindetails = new logindetails()
-
-            //       {
-            //           isactive = true,
-            //           Email = reg.Email,
-            //           password = passwordd,
-            //           role = reg.role,
-            //           userid = useridds,
-            //           LastLoginDate = DateTime.Now,
-
-            //       };
-            //       businesobj.logindetails.Add(logindetails);
-            //       businesobj.SaveChanges();
-            //       return View("Index");
-            //   }
-            //   return View();
-
-            public ActionResult Editempacc(int id)
+        public ActionResult Registrationsuccess()
         {
-
-            var ids = businesobj.registration.Find(id);
-            var acctyplist = businesobj.actypcrt.ToList();
-            ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", ids.acctype);
-            var rolelist = businesobj.role.Where(x => x.isactive == true & x.rolename != "Customer");
-            //var rolelist= businesobj.role.ToList();
-            ViewBag.rolelist = new SelectList(rolelist, "roleid", "rolename", ids.roleid);
-            ViewBag.accountid = ids.accountnumber;
-            ViewBag.Email = ids.Email;
-            //ViewBag.
-            return View(ids);
+            return View();
         }
-        int useridds = 0;
-        [HttpPost]
-        public ActionResult Editempacc(Registration accparm)
+        public void SendEmailToUser(string emailId, string activationCode)
         {
-            var acctyplist = businesobj.actypcrt.ToList();
-            ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", accparm.acctype);
-            var name = businesobj.actypcrt.Where(c => c.acc_type_id == accparm.acctype);
-            foreach (var acctypname in name)
-                accparm.acctypename = acctypname.account_type;
+            var GenarateUserVerificationLink = "admin/UserVerification/" + activationCode;
+            var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, GenarateUserVerificationLink);
 
-            var rolelist = businesobj.role.ToList();
-            ViewBag.rolelist = new SelectList(rolelist, "roleid", "rolename",accparm.roleid);
-            var rolenames = businesobj.role.Where(c => c.roleid == accparm.roleid);
-            foreach (var rolename in rolenames)
-                accparm.role = rolename.rolename;
-            //  var aclimit = businesobj.actypcrt.Find(accparm.acctype);
-            // accparm.bank_balance = aclimit.min_limit;
-            
-            //int x = Convert.ToInt32(TempData["accountid"]);
-            string x = Convert.ToString(TempData["accountid"]);
+            var fromMail = new MailAddress("sumankore121@gmail.com", "Bank Name"); // set your email    
+            var fromEmailpassword = "bhxavspkfpwckuae"; // Set your password     
+            var toEmail = new MailAddress(emailId);
 
-            accparm.Email = TempData["Email"].ToString();
-            accparm.accountnumber = x;
-            businesobj.Entry(accparm).State = EntityState.Modified;
-            businesobj.SaveChanges();
-            var userids = businesobj.logindetails.Where(c => c.Email == accparm.Email);
-            foreach (var useridd in userids)
-                // useridds = useridd.loginid;
-                businesobj.logindetails.Remove(useridd);
-            var logindetailss = new logindetails()
+            var smtp = new SmtpClient();
+            smtp.Host = "smtp.gmail.com";
+            smtp.Port = 587;
+            //smtp.EnableSsl = true;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "bhxavspkfpwckuae");
+            //smtp.Credentials = new NetworkCredential(fromMail.Address, fromEmailpassword);
+            smtp.EnableSsl = true;
+            var Message = new MailMessage(fromMail, toEmail);
+            Message.Subject = "Registration Completed";
+            Message.Body = "<br/> Your registration completed succesfully." +
+                           "<br/> please click on the below link for account verification" +
+                           "<br/><br/><a href=" + link + ">" + link + "</a>";
+            Message.IsBodyHtml = true;
+            smtp.Send(Message);
+        }
+        [HttpPost]
+        public ActionResult UserVerification(string id)
+        {
+            bool Status = false;
 
+            businesobj.Configuration.ValidateOnSaveEnabled = false; // Ignor to password confirmation     
+            var IsVerify = businesobj.registration.Where(u => u.ActivationCode == new Guid(id).ToString()).FirstOrDefault();
+
+            if (IsVerify != null)
             {
-                Email = accparm.Email,
-                userid = accparm.userid,
-                password = accparm.password,
-                role = accparm.role,
-                AccountLocked = false,
-                isactive = true,
-                loginid = useridds,
-                LastLoginDate = DateTime.Now,
-            };
-            businesobj.logindetails.Add(logindetailss);
-            //businesobj.Entry(logindetailss).State = EntityState.Added;
-            businesobj.SaveChanges();
-            return RedirectToAction("Employees");
+                IsVerify.EmailVerification = true;
+                businesobj.SaveChanges();
+                ViewBag.Message = "Email Verification completed";
+                Status = true;
+                ViewBag.pass = "Please reset your password before logging in";
+            }
+            else
+            {
+                ViewBag.Message = "Invalid Request...Email not verified";
+                ViewBag.Status = false;
+            }
 
+            return View();
+        }
+
+
+
+        public ActionResult userverification()
+        {
+             return View();
         }
 
         public string password()
         {
-            string numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz@!$#%&*";
+            string numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*";
             Random objrandom = new Random();
             string passwordString = "";
             string strrandom = string.Empty;
@@ -540,20 +549,137 @@ namespace Bank_project.Controllers
                 passwordString = numbers.ToCharArray()[temp].ToString();
                 strrandom += passwordString;
             }
-            return strrandom;
+            //ViewBag.strongpwd = strrandom;
+            TempData["pass"] = strrandom;
+            //return strrandom;
+            return Convert.ToBase64String(System.Security.Cryptography.SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(strrandom)));
         }
+
+
+        public ActionResult Editempacc(int id)
+        {
+
+            //var ids = businesobj.registration.Find(id);
+            //var acctyplist = businesobj.actypcrt.ToList();
+            //ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", ids.acctype);
+            //var rolelist = businesobj.role.Where(x => x.isactive == true & x.rolename != "Customer");
+            ////var rolelist= businesobj.role.ToList();
+            //ViewBag.rolelist = new SelectList(rolelist, "roleid", "rolename", ids.roleid);
+
+
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+
+            resultviewmodel mymodel = new resultviewmodel();
+
+            mymodel.Registerviewlist = Getaccounts().Where(x => x.userid == id).ToList();
+            if (mymodel.Registerviewlist == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            foreach (var items in mymodel.Registerviewlist)
+            {
+                ViewBag.acnum = items.accountnumber;
+                ViewBag.accountype = items.acctypename;
+                //ViewBag.bankbal = items.bank_balance;
+                ViewBag.email = items.Email;
+            }
+            //mymodel.Registerview = Getaccounts();
+            return View(mymodel);
+        }
+        int useridds = 0;
+        [HttpPost]
+        public ActionResult Editempacc(resultviewmodel accparm)
+        {
+            //var acctyplist = businesobj.actypcrt.ToList();
+            //ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", accparm.acctype);
+            //var name = businesobj.actypcrt.Where(c => c.acc_type_id == accparm.acctype);
+            //foreach (var acctypname in name)
+
+
+            //var rolelist = businesobj.role.ToList();
+            //ViewBag.rolelist = new SelectList(rolelist, "roleid", "rolename",accparm.roleid);
+            //var rolenames = businesobj.role.Where(c => c.roleid == accparm.roleid);
+            //foreach (var rolename in rolenames)
+            //    accparm.role = rolename.rolename;
+
+
+            //var names = "";
+            for (int i = 0; i < accparm.Registerviewlist.Count(); i++)
+            {
+                var acctyplist = businesobj.actypcrt.ToList();
+                ViewBag.acctypes = new SelectList(acctyplist, "acc_type_id", "account_type", accparm.Registerviewlist[i].acctype);
+                ////  var aclimit = businesobj.actypcrt.Find(accparm.acctype);
+                //// accparm.bank_balance = aclimit.min_limit;
+                var name = businesobj.actypcrt.ToList().Where(c => c.acc_type_id == accparm.Registerviewlist[i].acctype);
+                foreach (var acctypname in name)
+                    accparm.Registerviewlist[i].acctypename = acctypname.account_type;
+                //accparm.accountid = ViewBag.accountid;
+                //var x = Convert.ToInt32(TempData["accountid"]);
+                accparm.Registerviewlist[i].Email = TempData["Email"].ToString();
+                //accparm.Registerviewlist[i].accountnumber = Convert.ToString(x);
+                businesobj.Entry(accparm.Registerviewlist[i]).State = EntityState.Modified;
+                businesobj.SaveChanges();
+            }
+            return RedirectToAction("Employees");
+            //  var userids = businesobj.logindetails.Where(c => c.Email == accparm.Registerviewlist[i].Email);
+            // foreach (var useridd in userids)
+            // useridds = useridd.loginid;
+            // businesobj.logindetails.Remove(useridd);
+            //var logindetailss = new logindetails()
+            //{ 
+            // for (int i = 0; i < accparm.Registerviewlist.Count();i++)
+            //{ 
+            //    Email = accparm.Registerviewlist[i].Email,
+            //    userid = accparm.Registerviewlist[i].userid,
+            //    password = accparm.Registerviewlist[i].password,
+            //    role = accparm.Registerviewlist[i].role,
+            //    AccountLocked = false,
+            //    isactive = true,
+            //    loginid = useridds,
+            //    LastLoginDate = DateTime.Now,
+            //};
+            // businesobj.logindetails.Add(logindetailss);
+            //businesobj.Entry(logindetailss).State = EntityState.Added;
+            // businesobj.SaveChanges();
+            return RedirectToAction("Employees");
+
+        }
+
+        //public string password()
+        //{
+        //    string numbers = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz@!$#%&*";
+        //    Random objrandom = new Random();
+        //    string passwordString = "";
+        //    string strrandom = string.Empty;
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        int temp = objrandom.Next(0, numbers.Length);
+        //        passwordString = numbers.ToCharArray()[temp].ToString();
+        //        strrandom += passwordString;
+        //    }
+        //    return strrandom;
+        //}
         public ActionResult empdetails(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var custdetails = businesobj.registration.Find(id);
-            if (custdetails == null)
+            //IEnumerable<Registration> custdetails = businesobj.registration.Where(x => x.userid == id);
+
+            resultviewmodel mymodel = new resultviewmodel();
+            var accounts = Getaccounts();
+            mymodel.Registerview = Getaccounts().Where(x => x.userid == id);
+
+            if (mymodel.Registerview == null)
             {
                 return HttpNotFound();
             }
-            return View(custdetails);
+            return View(mymodel);
         }
         public ActionResult empldelete(int id)
         {
@@ -561,12 +687,15 @@ namespace Bank_project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var custdetails = businesobj.registration.Find(id);
-            if (custdetails == null)
+
+            resultviewmodel ids = new resultviewmodel();
+            ids.Registerview = Getaccounts().Where(x => x.userid == id);
+            //var ids = businesobj.registration.Find(id);
+            if (ids == null)
             {
                 return HttpNotFound();
             }
-            return View(custdetails);
+            return View(ids);
         }
         [HttpPost]
         [ActionName("empldelete")]
@@ -580,7 +709,39 @@ namespace Bank_project.Controllers
             return RedirectToAction("Index");
 
         }
+        private static List<Transactions> GetTransactions()
+        {
+            acccreatecontext db = new acccreatecontext();
+
+            var transactionss = db.Transaction.ToList();
+            return transactionss;
+        }
+
+        private static List<Registration> Getaccounts()
+        {
+            acccreatecontext db = new acccreatecontext();
+
+            var accounts = db.registration.ToList();
+            return accounts;
+        }
+
+        private static List<acctypes> GetaccountsTypes()
+        {
+            acccreatecontext db = new acccreatecontext();
+
+            var accounts = db.actypcrt.ToList();
+            return accounts;
+        }
+        private static List<roles> GetrolesTypes()
+        {
+            acccreatecontext db = new acccreatecontext();
+
+            var accounts = db.role.ToList();
+            return accounts;
+        }
+
     }
+
 }
 
 

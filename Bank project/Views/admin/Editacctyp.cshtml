@@ -1,4 +1,4 @@
-﻿@model Bank_project.Models.acctypes
+﻿@model Bank_project.Models.resultviewmodel
 
 @{
     ViewBag.Title = "Editacctyp";
@@ -10,45 +10,61 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+
+    for (int i = 0; i < Model.acctyplist.Count(); i++)
+    {
+<div class="form-horizontal">
+
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => Model.acctyplist[i].acc_type_id)
+
+    <div class="form-group">
+        @Html.LabelFor(model => Model.acctyplist[i].account_type, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.HiddenFor(model => Model.acctyplist[i].account_type, new { htmlAttributes = new { @class = "form-control" } })
+            @ViewBag.Accountype
+            @{TempData["actype"] = ViewBag.Accountype;}
+                @Html.ValidationMessageFor(model => Model.acctyplist[i].account_type, "", new { @class = "text-danger" })
+        </div>
+    </div>
+   
     
-    <div class="form-horizontal">
-        <h4>acctypes</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.acc_type_id)
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.account_type, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.account_type, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.account_type, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => Model.acctyplist[i].acc_type_id, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @ViewBag.actypid
+            @{TempData["actypeid"]=ViewBag.actypid;}
+            @Html.HiddenFor(model => Model.acctyplist[i].acc_type_id, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => Model.acctyplist[i].acc_type_id, "", new { @class = "text-danger" })
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.min_limit, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.min_limit, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.min_limit, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => Model.acctyplist[i].min_limit, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => Model.acctyplist[i].min_limit, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => Model.acctyplist[i].min_limit, "", new { @class = "text-danger" })
         </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.isactive, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.isactive)
-                    @Html.ValidationMessageFor(model => model.isactive, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+    <div class="form-group">
+        @Html.HiddenFor(model => Model.acctyplist[i].isactive, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.HiddenFor(model => Model.acctyplist[i].isactive)
+                @Html.ValidationMessageFor(model => Model.acctyplist[i].isactive, "", new { @class = "text-danger" })
             </div>
         </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Save" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+    }
 }
 
 <div>
