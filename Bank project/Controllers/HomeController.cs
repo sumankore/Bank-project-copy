@@ -209,7 +209,7 @@ namespace Bank_project.Controllers
             //smtp.EnableSsl = true;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "bhxavspkfpwckuae");
+            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "csnombljapkgclxk");
             //smtp.Credentials = new NetworkCredential(fromMail.Address, fromEmailpassword);
             smtp.EnableSsl = true;
             var Message = new MailMessage(fromMail, toEmail);

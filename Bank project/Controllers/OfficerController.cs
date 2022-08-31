@@ -266,7 +266,7 @@ namespace Bank_project.Controllers
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, GenarateUserVerificationLink);
 
             var fromMail = new MailAddress("sumankore121@gmail.com", "Bank Name"); // set your email    
-            var fromEmailpassword = "bhxavspkfpwckuae"; // Set your password     
+            var fromEmailpassword = "csnombljapkgclxk"; // Set your password     
             var toEmail = new MailAddress(emailId);
 
             var smtp = new SmtpClient();
@@ -275,7 +275,7 @@ namespace Bank_project.Controllers
             //smtp.EnableSsl = true;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "bhxavspkfpwckuae");
+            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "csnombljapkgclxk");
             //smtp.Credentials = new NetworkCredential(fromMail.Address, fromEmailpassword);
             smtp.EnableSsl = true;
             var Message = new MailMessage(fromMail, toEmail);

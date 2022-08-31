@@ -13,7 +13,6 @@ namespace Bank_project.Models
         [Key]
         public string id { get; set; }
         public Registration Registerviews { get; set; }
-
         public Transactions Transactionsviews { get; set; }
         public IEnumerable<Registration> Registerview { get; set; }
         public IEnumerable<Transactions> Transactionsview { get; set; }

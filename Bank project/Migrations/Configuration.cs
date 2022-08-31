@@ -10,7 +10,6 @@ namespace Bank_project.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(Bank_project.Models.acccreatecontext context)

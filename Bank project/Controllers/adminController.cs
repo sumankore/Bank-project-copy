@@ -21,6 +21,7 @@ namespace Bank_project.Controllers
     {
         acccreatecontext businesobj = new acccreatecontext();
         acctypes custobj = new acctypes();
+
         [CustomAuthorize("Admin")]
         public ActionResult Index()
         {
@@ -466,7 +467,7 @@ namespace Bank_project.Controllers
                     };
                     businesobj.logindetails.Add(logindetails);
                     businesobj.SaveChanges();
-                    ViewBag.regsuccess = "Your registration is successful please check your email";
+                    ViewBag.regsuccess = "Registration is successful please ask customer or employee to share the email to admin@gmail.com";
                     return View("Registrationsuccess");
                     //return View("Index");
                 }
@@ -481,20 +482,19 @@ namespace Bank_project.Controllers
         }
         public void SendEmailToUser(string emailId, string activationCode)
         {
-            var GenarateUserVerificationLink = "admin/UserVerification/" + activationCode;
+            var GenarateUserVerificationLink = "/admin/UserVerification/" + activationCode;
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, GenarateUserVerificationLink);
 
             var fromMail = new MailAddress("sumankore121@gmail.com", "Bank Name"); // set your email    
-            var fromEmailpassword = "bhxavspkfpwckuae"; // Set your password     
+            var fromEmailpassword = "csnombljapkgclxk"; // Set your password     
             var toEmail = new MailAddress(emailId);
-
             var smtp = new SmtpClient();
             smtp.Host = "smtp.gmail.com";
             smtp.Port = 587;
             //smtp.EnableSsl = true;
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "bhxavspkfpwckuae");
+            smtp.Credentials = new System.Net.NetworkCredential("sumankore121@gmail.com", "csnombljapkgclxk");
             //smtp.Credentials = new NetworkCredential(fromMail.Address, fromEmailpassword);
             smtp.EnableSsl = true;
             var Message = new MailMessage(fromMail, toEmail);
